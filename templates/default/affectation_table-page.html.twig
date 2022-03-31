@@ -1,0 +1,35 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block css %}
+    <link rel="stylesheet" href="https://torf.co/dist/css/app.css" />
+{% endblock %}
+{% block body %}
+    <div class="intro-y datatable-wrapper box p-5 mt-5">
+        <table class="table table-report table-report--bordered display datatable w-full" >
+            <thead>
+            <th>Nom</th>
+            <th>Prénom</th>
+
+            <th>Interventions</th>
+
+
+            </thead>
+            <tbody>
+
+            <td>el ahmadi</td>
+            <td>hassan</td>
+
+
+            <td>pane</td>
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block js %}
+    <!-- BEGIN: JS Assets-->
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=["your-google-map-api]&libraries=places"></script>
+    <script src="https://torf.co/dist/js/app.js"></script>
+
+    <!-- END: JS Assets-->
+{% endblock %}

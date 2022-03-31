@@ -1,0 +1,183 @@
+
+{% extends 'conducteur-dashboard.html.twig' %}
+{% block css %}
+    <link href="../../../../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../../../../vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/chosen.css') }}">
+    <!-- Vendor CSS-->
+    <link href="../../../../vendor/select2/select2.min.css" rel="stylesheet" media="all">
+
+
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+
+    <link href="https://colorlib.com/polygon/cooladmin/css/theme.css" rel="stylesheet" media="all">
+
+
+
+
+    <!-- Main CSS-->
+    <link href="../../../../css/main.css" rel="stylesheet" media="all">
+{% endblock %}
+{% block title %}
+    <title>creer une intervention</title>
+{% endblock %}
+
+{% block body %}
+<div class="col-lg-12">
+<div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
+<div class="au-card-title" style="background-color: blue">
+<div class="bg-overlay bg-overlay--blue"></div>
+<h3>
+ <i class="fas fa-fw   fa-plus-square"></i>  Creer une nouvelle Intervention</h3>
+<span class="au-btn-plus">
+<i class="zmdi zmdi-plus"></i>
+</span>
+</div>
+         <div class="card">
+            <div class=" card-4">
+                <div class="card-body">
+
+
+                    <form method="POST" id="form1" class="row g-3">
+
+                       <div class="col-md-6">
+
+                                    <label class="label">Machine <span class="fa fa-check fa-warning" id="warn"></span></label>
+                                    <div class="rs-select2 js-select-simple"  >
+                                        <select id="machine_select" name="machine" required="required" class="" onchange="choice1(this)"  >
+                                            <option disabled="disabled"  selected="selected">Selectionnez la machine</option>
+                                            {% for machine in machines %}
+                                                <option name="{{ machine.nomMachine }}" value="{{ machine.nomMachine }}" onselect="testF()">{{ machine.nomMachine }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+
+                       </div>
+
+
+                               <div class="col-md-6 ">
+
+                                       <label class="label">Secteur <span class="fa fa-check fa-warning" id="warn2"></span></label>
+                                       <div class="rs-select2 js-select-simple" >
+                                           <select id="secteur_select" name="secteur" class="js-example-tags" >
+                                               <option disabled="disabled" selected="selected">selectionnez secteur</option>
+                                               {% for sec in secteurs %}
+                                                   <option>{{ sec.nom }}</option>
+                                               {% endfor %}
+                                           </select>
+                                       </div>
+
+                               </div>
+
+
+                               <div class="col-12 mt-3" hidden id="deff" >
+
+                                    <label class="label">Defaillance <span class="fa fa-check fa-warning" id="warn1"></span></label>
+                                    <div class="rs-select2 js-select-simple" >
+                                        <select id="defaillance" name="defaillance" class="js-example-tags"></select>
+                                    </div>
+                                </div>
+
+
+
+                        <div class="col-md-6 mt-3">
+
+                                <label class="label">A regler avant :</label>
+                                <div class="input-group-icon mt-3">
+                                    <input   type="datetime-local"  name="date_fin">
+                                </div>
+
+                        </div>
+
+
+                            <div class="col-md-6 mt-3">
+
+                                    <label class="label">Urgence <span class="fa fa-check fa-warning" id="warn3"></span></label>
+                                    <div class="p-t-10">
+                                        <label class="radio-container m-r-45">oui
+                                            <input id="urgence" type="radio" value="oui" name="urgence">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radio-container">non
+                                            <input   type="radio" value="non" name="urgence">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+                        <div class="p-t-15">
+                            <button class="btn btn--radius-2 btn--blue" type="submit" id="sub_button" disabled="disabled" >Creer une intervention <span class="fa fa-plus"></span></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+
+    <!-- Vendor JS-->
+    <script src="../../../../vendor/select2/select2.min.js"></script>
+
+    <!-- Form Validator -->
+
+    <!-- end Form Validator -->
+    <!-- Main JS-->
+    <script src="../../../../js/global.js"></script>
+    <script src="{{ asset('js/validator.js') }}"></script>
+
+    <script> jQuery(document).ready(function (){
+            $(".js-example-tags").select2({
+                tags: true,
+                width: 'resolve'
+            });
+        });
+    </script>
+    <script>
+        function choice1(select) {
+            machine_name = select.options[select.selectedIndex].text;
+            $('#form1').addClass('loading');
+            $.ajax({
+                url:'/creerintervention',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "machine_name": machine_name,
+                },
+                async: true,
+                success: function (data)
+                {
+                    $('#defaillance').empty();
+                    $('#defaillance').append("<option disabled='disabled' selected='selected'>Choose option</option>");
+                    for (i=0;i<data.nbr; i++){
+                        console.log(data.noms[i]);
+                        $('#defaillance').append("<option>" + data.noms[i]+"</option>")
+                    }
+                    $('#deff').removeAttr("hidden");
+                    $('#form1').removeClass('loading');
+                }
+            });
+        }
+    </script>
+
+{% endblock %}
