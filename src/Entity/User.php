@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,8 +11,8 @@ use FOS\UserBundle\Model\User as BaseUser;
 
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- */
+* @ORM\Entity(repositoryClass=UserRepository::class)
+*/
 class User extends BaseUser
 {
     /**
@@ -55,6 +56,11 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity=DateInteTech::class, mappedBy="technicien")
      */
     private $dateInteTeches;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $poste;
 
     public function __construct()
     {
@@ -186,6 +192,18 @@ class User extends BaseUser
                 $dateInteTech->setTechnicien(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPoste(): ?string
+    {
+        return $this->poste;
+    }
+
+    public function setPoste(?string $poste): self
+    {
+        $this->poste = $poste;
 
         return $this;
     }

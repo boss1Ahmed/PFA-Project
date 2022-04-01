@@ -48,30 +48,10 @@ class LoginController extends AbstractController
      */
     public function indexact(): Response
     {
-        return $this->render('edit-profile/profile_check-page.html.twig', [
-            'controller_name' => 'LoginController',
-        ]);
+        return $this->render('edit-profile/profile_check-page.html.twig',);
     }
-    /**
-     * @Route("
-    /techenicien")
-     */
-    public function indexacti(): Response
-    {
-        return $this->render('techenicien-dashboard.html.twig', [
-            'controller_name' => 'LoginController',
-        ]);
-    }
-    /**
-     * @Route("
-    /techenicienintervention")
-     */
-    public function indexactio(): Response
-    {
-        return $this->render('interventions/intervention_techenicien.html.twig', [
-            'controller_name' => 'LoginController',
-        ]);
-    }
+
+
 
 
     /**
@@ -84,8 +64,10 @@ class LoginController extends AbstractController
             'controller_name' => 'LoginController',
         ]);
     }
+
+
     /**
-     * @Route ("/creerintervention", name="creation_intervention")
+     * @Route ("/creerintervention1", name="creation_intervention1")
      */
     public function testAction(Request $request)
     {

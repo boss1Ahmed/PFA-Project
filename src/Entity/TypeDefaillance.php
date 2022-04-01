@@ -25,21 +25,19 @@ class TypeDefaillance
     private $nom;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="typeTech")
-     */
-    private $users;
-
-    /**
      * @ORM\OneToMany(targetEntity=Defaillance::class, mappedBy="typeDefaillance")
      */
     private $defaillances;
 
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="typeTech")
+     */
+    private $techniciens;
 
     public function __construct()
     {
-        $this->techniciens = new ArrayCollection();
-        $this->users = new ArrayCollection();
         $this->defaillances = new ArrayCollection();
+        $this->techniciens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -55,36 +53,6 @@ class TypeDefaillance
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setTypeTech($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getTypeTech() === $this) {
-                $user->setTypeTech(null);
-            }
-        }
 
         return $this;
     }
@@ -119,6 +87,38 @@ class TypeDefaillance
         return $this;
     }
 
+    /**
+     * @return Collection<int, User>
+     */
+    public function getTechniciens(): Collection
+    {
+        return $this->techniciens;
+    }
 
+    public function addTechnicien(User $technicien): self
+    {
+        if (!$this->techniciens->contains($technicien)) {
+            $this->techniciens[] = $technicien;
+            $technicien->setTypeTech($this);
+        }
 
+        return $this;
+    }
+
+    public function removeTechnicien(User $technicien): self
+    {
+        if ($this->techniciens->removeElement($technicien)) {
+            // set the owning side to null (unless already changed)
+            if ($technicien->getTypeTech() === $this) {
+                $technicien->setTypeTech(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNom();
+    }
 }

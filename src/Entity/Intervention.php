@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\InterventionRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,29 +26,31 @@ class Intervention
     private $dateLancement;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateFin;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="interventions")
+     * @ORM\Column(type="boolean", nullable=true)
      */
-    private $techniciens;
+    private $urgence;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="intersConducteur")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $conducteur;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Machine::class, inversedBy="interventions")
+     * @ORM\OneToMany(targetEntity=DateInteTech::class, mappedBy="intervention")
      */
-    private $machine;
+    private $dateInteTeches;
 
     /**
      * @ORM\ManyToOne(targetEntity=Defaillance::class, inversedBy="interventions")
@@ -60,15 +63,20 @@ class Intervention
     private $piecesRechange;
 
     /**
-     * @ORM\OneToMany(targetEntity=DateInteTech::class, mappedBy="intervention")
+     * @ORM\ManyToOne(targetEntity=Machine::class, inversedBy="interventions")
      */
-    private $dateInteTeches;
+    private $machine;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $etat;
 
     public function __construct()
     {
-        $this->techniciens = new ArrayCollection();
-        $this->piecesRechange = new ArrayCollection();
+
         $this->dateInteTeches = new ArrayCollection();
+        $this->piecesRechange = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,7 +101,7 @@ class Intervention
         return $this->dateFin;
     }
 
-    public function setDateFin(?\DateTimeInterface $dateFin): self
+    public function setDateFin(\DateTimeInterface $dateFin): self
     {
         $this->dateFin = $dateFin;
 
@@ -105,40 +113,29 @@ class Intervention
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
+    public function getUrgence(): ?bool
+    {
+        return $this->urgence;
+    }
+
+    public function setUrgence(?bool $urgence): self
+    {
+        $this->urgence = $urgence;
+
+        return $this;
+    }
+
+
     /**
      * @return Collection<int, User>
      */
-    public function getTechniciens(): Collection
-    {
-        return $this->techniciens;
-    }
-
-    public function addTechnicien(User $technicien): self
-    {
-        if (!$this->techniciens->contains($technicien)) {
-            $this->techniciens[] = $technicien;
-            $technicien->addIntervention($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTechnicien(User $technicien): self
-    {
-        if ($this->techniciens->removeElement($technicien)) {
-            $technicien->removeIntervention($this);
-        }
-
-        return $this;
-    }
-
     public function getConducteur(): ?User
     {
         return $this->conducteur;
@@ -151,14 +148,32 @@ class Intervention
         return $this;
     }
 
-    public function getMachine(): ?Machine
+    /**
+     * @return Collection<int, DateInteTech>
+     */
+    public function getDateInteTeches(): Collection
     {
-        return $this->machine;
+        return $this->dateInteTeches;
     }
 
-    public function setMachine(?Machine $machine): self
+    public function addDateInteTech(DateInteTech $dateInteTech): self
     {
-        $this->machine = $machine;
+        if (!$this->dateInteTeches->contains($dateInteTech)) {
+            $this->dateInteTeches[] = $dateInteTech;
+            $dateInteTech->setIntervention($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDateInteTech(DateInteTech $dateInteTech): self
+    {
+        if ($this->dateInteTeches->removeElement($dateInteTech)) {
+            // set the owning side to null (unless already changed)
+            if ($dateInteTech->getIntervention() === $this) {
+                $dateInteTech->setIntervention(null);
+            }
+        }
 
         return $this;
     }
@@ -199,32 +214,26 @@ class Intervention
         return $this;
     }
 
-    /**
-     * @return Collection<int, DateInteTech>
-     */
-    public function getDateInteTeches(): Collection
+    public function getMachine(): ?Machine
     {
-        return $this->dateInteTeches;
+        return $this->machine;
     }
 
-    public function addDateInteTech(DateInteTech $dateInteTech): self
+    public function setMachine(?Machine $machine): self
     {
-        if (!$this->dateInteTeches->contains($dateInteTech)) {
-            $this->dateInteTeches[] = $dateInteTech;
-            $dateInteTech->setIntervention($this);
-        }
+        $this->machine = $machine;
 
         return $this;
     }
 
-    public function removeDateInteTech(DateInteTech $dateInteTech): self
+    public function getEtat(): ?string
     {
-        if ($this->dateInteTeches->removeElement($dateInteTech)) {
-            // set the owning side to null (unless already changed)
-            if ($dateInteTech->getIntervention() === $this) {
-                $dateInteTech->setIntervention(null);
-            }
-        }
+        return $this->etat;
+    }
+
+    public function setEtat(?string $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

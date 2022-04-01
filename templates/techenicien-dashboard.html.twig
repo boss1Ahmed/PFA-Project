@@ -46,7 +46,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-            <a class="nav-link" href="/techenicienintervention">
+            <a class="nav-link" href="{{ path('page_acceuil_tehcnicien') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -86,7 +86,7 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
 
-                    <a class="collapse-item" href="/techenicienintervention">Mes interventions</a>
+                    <a class="collapse-item" href="{{ path('intervention_affecté') }}">Mes interventions</a>
 
 
                 </div>
@@ -284,22 +284,18 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                             <img class="img-profile rounded-circle"
-                                 src="img/undraw_profile.svg">
+                                 src="{{ asset('/img/undraw_profile.svg') }}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="{{ asset('/profile') }}">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
-                            </a>
-                            <a class="dropdown-item" href="{{ asset('/editprofile') }}">
+                            <a class="dropdown-item" href="{{ path('technicien_profile') }}">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Edit profile
                             </a>
 
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ asset('/login') }}" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
                             </a>
@@ -355,7 +351,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="{{ asset('/login') }}">Logout</a>
+                <a class="btn btn-primary" href="{{ path('fos_user_security_logout') }}">Logout</a>
             </div>
         </div>
     </div>

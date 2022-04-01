@@ -158,7 +158,7 @@
             machine_name = select.options[select.selectedIndex].text;
             $('#form1').addClass('loading');
             $.ajax({
-                url:'/creerintervention',
+                url:'{{ path('creation_intervention') }}',
                 type: "POST",
                 dataType: "json",
                 data: {
