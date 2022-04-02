@@ -2,19 +2,27 @@
 {% block css %}
 
     <link href="https://colorlib.com/polygon/cooladmin/css/font-face.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-4.7/css/font-awesome.min.css"
+          rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-5/css/fontawesome-all.min.css"
+          rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css"
+          rel="stylesheet" media="all">
 
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet"
+          media="all">
 
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/animsition/animsition.min.css" rel="stylesheet"
+          media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css"
+          rel="stylesheet" media="all">
     <link href="https://colorlib.com/polygon/cooladmin/vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet"
+          media="all">
     <link href="https://colorlib.com/polygon/cooladmin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="https://colorlib.com/polygon/cooladmin/vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet"
+          media="all">
 
     <link href="https://colorlib.com/polygon/cooladmin/css/theme.css" rel="stylesheet" media="all">
 
@@ -38,67 +46,94 @@
                 <div class="au-task js-list-load">
                     <div class="au-task__title">
                         <div class="row">
-                            <div class="col-sm-10">
+                            <div class="col-sm-6">
                                 <h4><strong>Vos interventions</strong></h4>
                             </div>
+                            <div class="col-sm-2 pl-4">
+                                <h4><strong>Etat</strong></h4>
+                            </div>
+
                             <div class="col-sm-2">
-                                <h4> <strong>Etat</strong></h4>
+                                <h4><strong>Action</strong></h4>
                             </div>
+
                         </div>
 
                     </div>
-
-                    <div class="au-task-list js-scrollbar3">
-                        <div class="au-task__item au-task__item--danger">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Meeting about plan for Admin Template 2018</a>
-                                </h5>
-                                <span class="time">10:00 AM</span>
-                            </div>
-                        </div>
-                        <div class="au-task__item au-task__item--warning">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Create new task for Dashboard</a>
-                                </h5>
-                                <span class="time">11:00 AM</span>
-                            </div>
-                        </div>
-                        <div class="au-task__item au-task__item--primary">
-                            <div class=" au-task__item-inner ">
-                                <div class="row">
-                                    <div class="col-sm-10">  <h5 class="task">
-                                            <a href="#">Create new task for Dashboard</a>
-                                        </h5>
-                                        <span class="time">11:00 AM</span></div>
-                                    <div class="col-sm-2">walo1</div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div class="au-task__item au-task__item--success">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Create new task for Dashboard</a>
-                                </h5>
-                                <span class="time">03:30 PM</span>
-                            </div>
-                        </div>
-                        <div class="au-task__item au-task__item--danger js-load-item">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Meeting about plan for Admin Template 2018</a>
-                                </h5>
-                                <span class="time">10:00 AM</span>
-                            </div>
-                        </div>
-
-                    </div>
-
                 </div>
+                <div class="au-task-list js-scrollbar3">
+                    <div class="au-task__item au-task__item--danger">
+                        <div class="au-task__item-inner">
+                            <div class="row">
+                                <div class="col-sm-6">
+                            <h5 class="task">
+                                <a href="#">Meeting about plan for Admin Template 2018</a>
+                            </h5>
+                                    <span class="time">10:00 AM</span></div>
+                                <div class="col-sm-2 "><button disabled class="btn btn-outline-warning">En cours</button></div>
+                            <div class="col-sm-2  pl-4"><button class="btn btn-primary">Valider</button></div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="au-task__item au-task__item--warning">
+                        <div class="au-task__item-inner">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h5 class="task">
+                                        <a href="#">Create new task for Dashboard</a>
+                                    </h5>
+                                    <span class="time">11:00 AM</span></div>
+                                <div class="col-sm-2 "><button disabled class="btn btn-outline-warning">En cours</button></div>
+                                <div class="col-sm-2  pl-4"><button class="btn btn-primary">Validée</button></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="au-task__item au-task__item--primary">
+                        <div class=" au-task__item-inner ">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h5 class="task">
+                                        <a href="#">Create new task for Dashboard</a>
+                                    </h5>
+                                    <span class="time">11:00 AM</span></div>
+                                <div class="col-sm-2 "><button disabled class="btn btn-outline-warning">En cours</button></div>
+                                <div class="col-sm-2  pl-4"><button class="btn btn-primary">Validée</button></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="au-task__item au-task__item--success">
+                        <div class="au-task__item-inner">
+                            <div class="row">
+                                <div class="col-sm-6">
+                            <h5 class="task">
+                                <a href="#">Create new task for Dashboard</a>
+                            </h5>
+                            <span class="time">03:30 PM</span></div>
+                            <div class="col-sm-2 "><button disabled class="btn btn-outline-warning">En cours</button></div>
+                            <div class="col-sm-2  pl-4"><button class="btn btn-primary">Validée</button></div>
+
+                         </div>
+                        </div>
+                    </div>
+                    <div class="au-task__item au-task__item--danger js-load-item">
+                        <div class="au-task__item-inner">
+                            <div class="row">
+                                <div class="col-sm-6">
+                            <h5 class="task">
+                                <a href="#">Meeting about plan for Admin Template 2018</a>
+                            </h5>
+                            <span class="time">10:00 AM</span></div>
+                                    <div class="col-sm-2 "><button disabled class="btn btn-outline-warning">En cours</button></div>
+                                    <div class="col-sm-2  pl-4"><button class="btn btn-primary">Validée</button></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}
