@@ -6,7 +6,7 @@ use App\Entity\Defaillance;
 use App\Entity\Machine;
 use App\Entity\TypeDefaillance;
 use AppBundle\Metier\InterventionMetier;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,7 +28,9 @@ class ConducteurController extends AbstractController
     public function dashboardAction(): Response
     {
         return $this->render('interventions/intervention_conducteur.html.twig',);
+
     }
+
 
     /**
      * @Route("/editprofile",name="conducteur_profile")

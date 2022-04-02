@@ -1,0 +1,39 @@
+{% extends 'techenicien-dashboard.html.twig' %}
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('css/techniqueHistorique.css') }}" />
+{% endblock %}
+{% block body %}
+    <div class="intro-y datatable-wrapper box p-5 mt-1">
+        <table class="table table-report table-report--bordered display datatable w-full" >
+            <thead>
+            <tr>
+                <th class="border-b-2 whitespace-no-wrap">Machine</th>
+                <th class="border-b-2 text-center whitespace-no-wrap">Defaillance</th>
+                <th class="border-b-2 text-center whitespace-no-wrap">Date Debut</th>
+                <th class="border-b-2 text-center whitespace-no-wrap">Date Fin</th>
+
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td class="border-b">
+                    <div class="font-medium whitespace-no-wrap">Machine 1</div>
+                </td>
+                <td class="text-center border-b">
+                    <div class="text-gray-600 text-xs whitespace-no-wrap">deffaillance 1</div>
+                </td>
+                <td class="text-center border-b">02/04/2022</td>
+                <td class="text-center border-b">03/04/2022</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block js %}
+    <!-- BEGIN: JS Assets-->
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=["your-google-map-api]&libraries=places"></script>
+    <script src="https://torf.co/dist/js/app.js"></script>
+
+    <!-- END: JS Assets-->
+{% endblock %}

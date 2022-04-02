@@ -20,7 +20,10 @@ class TechnicienController extends AbstractController
      */
     public function dashboardAction(): Response
     {
-        return $this->render('interventions/intervention_techenicien.html.twig' );
+
+        return $this->render('interventions/intervention_techenicien.html.twig', [
+            'controller_name' => 'LoginController',
+        ]);
     }
 
     /**
@@ -28,7 +31,7 @@ class TechnicienController extends AbstractController
      */
     public function interventionsAction(): Response
     {
-        return $this->render('interventions/intervention_techenicien.html.twig', [
+        return $this->render('technicien/historique.html.twig', [
             'controller_name' => 'LoginController',
         ]);
     }
