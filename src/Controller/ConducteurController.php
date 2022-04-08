@@ -27,11 +27,43 @@ class ConducteurController extends AbstractController
      */
     public function dashboardAction(): Response
     {
-        return $this->render('interventions/intervention_conducteur.html.twig',);
+        $interventions = $this->getDoctrine()->getRepository("App:Intervention")->findAll();
+        return $this->render('interventions/intervention_conducteur.html.twig',[
+            "interventions"=>$interventions
+        ]);
+
 
     }
 
+    /**
+     * @Route ("/changestatut",name="changer_etat_intervention")
+     */
+    public function changeAction(Request $request){
+        $em=$this->getDoctrine()->getManager();
+       $id = $request->get("key");
+       $intervention = $em->getRepository("App:Intervention")->findOneBy(["id"=>$id]);
+       $intervention->setEtat("Terminée");
+       $em->persist($intervention);
+       $em->flush();
+    }
 
+
+    /**
+     * @Route ("/test",name="test_route")
+     */
+    public function testAction(Request $request){
+        $defs = $this->getDoctrine()->getManager()->getRepository('App:Defaillance')->findAll();
+        $nbr = count($defs);
+        if ($request->getMethod() == 'POST'){
+            $arrdata = [
+                'nbr'=>$nbr
+            ];
+            return new JsonResponse($arrdata);
+        }else{
+            die("walo");
+        }
+
+    }
     /**
      * @Route("/editprofile",name="conducteur_profile")
      */

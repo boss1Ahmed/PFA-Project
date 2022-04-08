@@ -1,22 +1,30 @@
 {% extends 'techenicien-dashboard.html.twig' %}
 {% block css %}
 
-<link href="https://colorlib.com/polygon/cooladmin/css/font-face.css" rel="stylesheet" media="all">
-<link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-<link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-<link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/css/font-face.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-4.7/css/font-awesome.min.css"
+          rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-5/css/fontawesome-all.min.css"
+          rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css"
+          rel="stylesheet" media="all">
 
-<link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet"
+          media="all">
 
-<link href="https://colorlib.com/polygon/cooladmin/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-<link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-<link href="https://colorlib.com/polygon/cooladmin/vendor/wow/animate.css" rel="stylesheet" media="all">
-<link href="https://colorlib.com/polygon/cooladmin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-<link href="https://colorlib.com/polygon/cooladmin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-<link href="https://colorlib.com/polygon/cooladmin/vendor/slick/slick.css" rel="stylesheet" media="all">
-<link href="https://colorlib.com/polygon/cooladmin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/animsition/animsition.min.css" rel="stylesheet"
+          media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css"
+          rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet"
+          media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet"
+          media="all">
 
-<link href="https://colorlib.com/polygon/cooladmin/css/theme.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/css/theme.css" rel="stylesheet" media="all">
 
 
 
@@ -33,65 +41,208 @@
                     <h3>
                         <i class="zmdi zmdi-account-calendar"></i>26 April, 2018</h3>
 
-                    </button>
+
                 </div>
                 <div class="au-task js-list-load">
                     <div class="au-task__title">
-                        <p>Tasks for John Doe</p>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <h3 id="h3"></h3>
+                                <h4><strong>Vos interventions</strong></h4>
+                            </div>
+
+
+                            <div class="col-sm-2">
+                                <h4><strong>Action</strong></h4>
+                            </div>
+
+                        </div>
+
                     </div>
-                    <div class="au-task-list js-scrollbar3">
-                        <div class="au-task__item au-task__item--danger">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Meeting about plan for Admin Template 2018</a>
-                                </h5>
-                                <span class="time">10:00 AM</span>
+                </div>
+                <div class="au-task-list js-scrollbar3">
+                    <div class="au-task__item au-task__item--danger" id="divpremierbtn">
+                        <div class="au-task__item-inner">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <h5 class="task">
+                                        <a href="#">Meeting about plan for Admin Template 2018</a>
+                                    </h5>
+                                    <span class="time">10:00 AM</span></div>
+                                <div class="col-sm-2  pl-4">
+                                    <button onclick="select(this.id)" class="btn btn-success" data-toggle="modal"
+                                            data-target="#confirm" id="premierbtn">Début
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="au-task__item au-task__item--warning">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Create new task for Dashboard</a>
-                                </h5>
-                                <span class="time">11:00 AM</span>
+                    </div>
+                    <div class="au-task__item au-task__item--warning">
+                        <div class="au-task__item-inner">
+                            <div class="row">
+                                <div class="col-sm-10">
+
+                                    <h5 class="task">
+                                        <a href="#">Create new task for Dashboard</a>
+                                    </h5>
+                                    <span class="time">11:00 AM</span></div>
+
+                                <div class="col-sm-2  pl-4">
+                                    <button id="btn2" onclick="select(this.id)" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#confirm">Début</button>
+                                </div>
                             </div>
+
                         </div>
-                        <div class="au-task__item au-task__item--primary">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Meeting about plan for Admin Template 2018</a>
-                                </h5>
-                                <span class="time">02:00 PM</span>
-                            </div>
-                        </div>
-                        <div class="au-task__item au-task__item--success">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Create new task for Dashboard</a>
-                                </h5>
-                                <span class="time">03:30 PM</span>
-                            </div>
-                        </div>
-                        <div class="au-task__item au-task__item--danger js-load-item">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Meeting about plan for Admin Template 2018</a>
-                                </h5>
-                                <span class="time">10:00 AM</span>
-                            </div>
-                        </div>
-                        <div class="au-task__item au-task__item--warning js-load-item">
-                            <div class="au-task__item-inner">
-                                <h5 class="task">
-                                    <a href="#">Create new task for Dashboard</a>
-                                </h5>
-                                <span class="time">11:00 AM</span>
+                    </div>
+                    <div class="au-task__item au-task__item--primary">
+                        <div class=" au-task__item-inner ">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <h5 class="task">
+                                        <a href="#">Create new task for Dashboard</a>
+                                    </h5>
+                                    <span class="time">11:00 AM</span></div>
+
+                                <div class="col-sm-2  pl-4">
+                                    <button class="btn btn-primary">Début</button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <div class="au-task__item au-task__item--success">
+                        <div class="au-task__item-inner">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <h5 class="task">
+                                        <a href="#">Create new task for Dashboard</a>
+                                    </h5>
+                                    <span class="time">03:30 PM</span></div>
+
+                                <div class="col-sm-2  pl-4">
+                                    <button class="btn btn-primary">Début</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="au-task__item au-task__item--danger js-load-item">
+                        <div class="au-task__item-inner">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <h5 class="task">
+                                        <a href="#">Meeting about plan for Admin Template 2018</a>
+                                    </h5>
+                                    <span class="time">10:00 AM</span></div>
+
+                                <div class="col-sm-2  pl-4">
+                                    <button class="btn btn-primary">Début</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cofirmation</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="confirm_text">Voulez vous vraiment indiquer le début de l'intervention?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="annuler" data-dismiss="modal">Non</button>
+                    <button class="btn btn-primary" onclick="confirm()">Oui</button>
                 </div>
             </div>
         </div>
     </div>
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        function addDate_inter_tech_debut(id) {
+            $.ajax({
+                url: '{{ path('dashboard_tehcnicien') }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "id_intervention": id,
+                },
+                async: true,
+                success: function (data) {
+                    alert(id)
+                },
+            });
+
+        }
+
+        function addDate_inter_tech_fin(id) {
+            $.ajax({
+                url: '{{ path('dashboard_tehcnicien') }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "id_intervention": id,
+                    "fin": true,
+                },
+                async: true,
+                success: function (data) {
+                    alert(id)
+                },
+            });
+
+        }
+
+        attr = "";
+        bool = false;
+        text = document.getElementById("confirm_text");
+        textdebut = "voulez vous indiquer le debut de la tache?";
+        textfin = "voulez vous indiquer la fin de la tache?";
+
+        function select(id){
+            attr=id;
+            if (document.getElementById(id).textContent.includes("Début")){
+                text.textContent = textdebut;
+            }else {
+                if (document.getElementById(id).textContent.includes("Fin")) {
+                    text.textContent = textfin;
+                    bool = true;
+                }
+            }
+        }
+
+
+
+
+        function confirm() {
+            document.getElementById(attr).textContent = "Fin";
+            document.getElementById(attr).className = "btn btn-danger pl-4 pr-4 "
+            document.getElementById("annuler").click();
+
+            if (bool){
+                document.getElementById("div" + attr).setAttribute("hidden","hidden");
+                bool = false;
+                addDate_inter_tech_fin(1)
+            }else{
+                addDate_inter_tech_debut(1)
+            }
+
+        }
+    </script>
+
+
 {% endblock %}
