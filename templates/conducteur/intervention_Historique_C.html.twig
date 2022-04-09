@@ -1,4 +1,4 @@
-{% extends 'techenicien-dashboard.html.twig' %}
+{% extends 'conducteur-dashboard.html.twig' %}
 {% block css %}
     <link rel="stylesheet" href="{{ asset('css/techniqueHistorique.css') }}" />
 {% endblock %}
@@ -14,23 +14,25 @@
 
             </tr>
             </thead>
-            <tbody>
-            {% for intervention in interventions %}
-                <tr>
-                    <td class="border-b">
-                        <div class="font-medium whitespace-no-wrap">{{ intervention.machine.nomMachine }}</div>
-                    </td>
-                    <td class="text-center border-b">
-                        <div class="text-gray-600 text-xs whitespace-no-wrap">{{ intervention.defaillance.libelle }}</div>
-                    </td>
-                    <td class="text-center border-b">{{ intervention.dateLancement|date('d-m-Y H:i') }}</td>
 
-                    {% if intervention.dateFin == null %}
-                        <td class="text-center border-b pr-2">En cours ...</td>
-                    {% else %}
-                        <td class="text-center border-b">{{ intervention.dateFin|date('d-m-Y H:i') }}</td>
-                    {% endif %}
-                </tr>
+            <tbody>
+
+            {% for intervention in interventions %}
+            <tr>
+                <td class="border-b">
+                    <div class="font-medium whitespace-no-wrap">{{ intervention.machine.nomMachine }}</div>
+                </td>
+                <td class="text-center border-b">
+                    <div class="text-gray-600 text-xs whitespace-no-wrap">{{ intervention.defaillance.libelle }}</div>
+                </td>
+                <td class="text-center border-b">{{ intervention.dateLancement|date('d-m-Y H:i') }}</td>
+
+                {% if intervention.dateFin == null %}
+                    <td class="text-center border-b pr-2">En cours ...</td>
+                {% else %}
+                    <td class="text-center border-b">{{ intervention.dateFin|date('d-m-Y H:i') }}</td>
+                {% endif %}
+            </tr>
             {% endfor %}
             </tbody>
         </table>

@@ -61,87 +61,54 @@
                     </div>
                 </div>
                 <div class="au-task-list js-scrollbar3">
-                    <div class="au-task__item au-task__item--danger" id="divpremierbtn">
-                        <div class="au-task__item-inner">
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <h5 class="task">
-                                        <a href="#">Meeting about plan for Admin Template 2018</a>
-                                    </h5>
-                                    <span class="time">10:00 AM</span></div>
-                                <div class="col-sm-2  pl-4">
-                                    <button onclick="select(this.id)" class="btn btn-success" data-toggle="modal"
-                                            data-target="#confirm" id="premierbtn">Début
-                                    </button>
+
+                    {% for tache in taches %}
+                        {% if tache.dateDebut != null %}
+                        <div class="au-task__item au-task__item--danger" id="div{{ tache.intervention.id }}">
+                            <div class="au-task__item-inner">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <h5 class="task">
+                                            <a data-toggle="modal"  data-target="#infos">
+                                            <strong style="font-size: larger">{{ tache.intervention.machine.nomMachine }}</strong>
+                                            </a>
+                                        </h5>
+                                        <div>  <h6 >{{ tache.intervention.defaillance.libelle }}</h6></div>
+                                        <span class="time">{{ tache.intervention.dateLancement |date('d-m-Y à H:i') }}</span>
+                                    </div>
+                                    <div class="col-sm-2  pl-2">
+                                        <button onclick="select(this.id)" class="btn btn-danger" data-toggle="modal"
+                                                data-target="#confirm" id="{{ tache.intervention.id }}">Fin
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="au-task__item au-task__item--warning">
-                        <div class="au-task__item-inner">
-                            <div class="row">
-                                <div class="col-sm-10">
-
-                                    <h5 class="task">
-                                        <a href="#">Create new task for Dashboard</a>
-                                    </h5>
-                                    <span class="time">11:00 AM</span></div>
-
-                                <div class="col-sm-2  pl-4">
-                                    <button id="btn2" onclick="select(this.id)" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#confirm">Début</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="au-task__item au-task__item--primary">
-                        <div class=" au-task__item-inner ">
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <h5 class="task">
-                                        <a href="#">Create new task for Dashboard</a>
-                                    </h5>
-                                    <span class="time">11:00 AM</span></div>
-
-                                <div class="col-sm-2  pl-4">
-                                    <button class="btn btn-primary">Début</button>
+                        {% endif %}
+                    {% endfor %}
+                    {% for tache in taches %}
+                        {% if tache.dateDebut == null %}
+                        <div class="au-task__item au-task__item--primary" id="div{{ tache.intervention.id }}">
+                            <div class="au-task__item-inner">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <h5 class="task">
+                                            <strong style="font-size: larger">{{ tache.intervention.machine.nomMachine }}</strong>
+                                        </h5>
+                                        <div>  <h6 >{{ tache.intervention.defaillance.libelle }}</h6></div>
+                                        <span class="time">{{ tache.intervention.dateLancement |date('d-m-Y à H:i') }}</span>
+                                    </div>
+                                    <div class="col-sm-2  pl-2">
+                                        <button onclick="select(this.id)" class="btn btn-success" data-toggle="modal"
+                                                data-target="#confirm" id="{{ tache.intervention.id }}">Début
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        {% endif %}
+                    {% endfor %}
 
-                    <div class="au-task__item au-task__item--success">
-                        <div class="au-task__item-inner">
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <h5 class="task">
-                                        <a href="#">Create new task for Dashboard</a>
-                                    </h5>
-                                    <span class="time">03:30 PM</span></div>
-
-                                <div class="col-sm-2  pl-4">
-                                    <button class="btn btn-primary">Début</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="au-task__item au-task__item--danger js-load-item">
-                        <div class="au-task__item-inner">
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <h5 class="task">
-                                        <a href="#">Meeting about plan for Admin Template 2018</a>
-                                    </h5>
-                                    <span class="time">10:00 AM</span></div>
-
-                                <div class="col-sm-2  pl-4">
-                                    <button class="btn btn-primary">Début</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
             </div>
@@ -164,6 +131,25 @@
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" id="annuler" data-dismiss="modal">Non</button>
                     <button class="btn btn-primary" onclick="confirm()">Oui</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="infos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">informations sur l'intervention</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="confirm_text">text</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button"  data-dismiss="modal">Non</button>
+
                 </div>
             </div>
         </div>
@@ -236,9 +222,10 @@
             if (bool){
                 document.getElementById("div" + attr).setAttribute("hidden","hidden");
                 bool = false;
-                addDate_inter_tech_fin(1)
+                addDate_inter_tech_fin(attr)
+
             }else{
-                addDate_inter_tech_debut(1)
+                addDate_inter_tech_debut(attr)
             }
 
         }

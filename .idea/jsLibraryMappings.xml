@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{A.style.css.pagespeed.cf.eQk9-CoeFP, Chart.bundle, animate, animsition, app, bootstrap, bootstrap-progressbar, bootstrap-progressbar-3.3.4, circle-progress, cs-skin-elastic, email-decode, flag-icon, font-awesome, font-face, fontawesome-all, hamburgers, jquery, jquery-2.1.4, jquery-3.2.1, jquery.counterup, jquery.dataTables, jquery.waypoints, main, markerclusterer, material-design-iconic-font, normalize, pe-icon-7-filled, perfect-scrollbar, plugins, popper, popper.js+bootstrap.js+main.js.pagespeed.jc.9eD6_Mep8S, select2, slick, tailwindcss, theme, themify-icons, wow}" />
+    <file url="PROJECT" libraries="{bootstrap, font-awesome, jquery, jquery.dataTables, material-design-iconic-font, theme}" />
   </component>
 </project>

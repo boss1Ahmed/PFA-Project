@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\Metier;
+namespace App\Metier;
 
 
 use App\Entity\Defaillance;
@@ -65,4 +65,6 @@ class InterventionMetier
         $em->persist($intervention);
         $em->flush();
     }
+
+
 }

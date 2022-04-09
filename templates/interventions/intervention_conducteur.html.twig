@@ -1,31 +1,15 @@
 {% extends 'conducteur-dashboard.html.twig' %}
 {% block css %}
 
-    <link href="https://colorlib.com/polygon/cooladmin/css/font-face.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-4.7/css/font-awesome.min.css"
-          rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/font-awesome-5/css/fontawesome-all.min.css"
-          rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css"
-          rel="stylesheet" media="all">
 
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet"
-          media="all">
 
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/animsition/animsition.min.css" rel="stylesheet"
-          media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css"
-          rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet"
-          media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet"
-          media="all">
+
+
+
 
     <link href="https://colorlib.com/polygon/cooladmin/css/theme.css" rel="stylesheet" media="all">
-
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css"
+          rel="stylesheet" media="all">
 
 
 {% endblock %}
@@ -49,7 +33,7 @@
                             <div class="col-sm-6">
                                 <h4><strong>Vos interventions</strong></h4>
                             </div>
-                            <div class="col-sm-2 pl-5">
+                            <div class="col-sm-2 pl-4">
                                 <h4><strong>Etat</strong></h4>
                             </div>
 
@@ -61,29 +45,10 @@
 
                     </div>
                 </div>
-
+                <div class="au-task-list js-scrollbar3">
                 {% for i in interventions %}
-                    {% if i.etat== "E" %}
-                        <div class="au-task__item au-task__item--warning js-load-item">
-                        <div class="au-task__item-inner">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h5 class="task">
-                                       <strong style="font-size: larger">{{ i.machine.nomMachine }}</strong>
-                                    </h5>
-                                  <div>  <h6 >{{ i.defaillance.libelle }}</h6></div>
-                                    <span class="time">{{ i.dateLancement |date('d-m-Y à H:i') }}</span></div>
-                                <div class="col-sm-2 ">
-                                    <button disabled class="btn btn-outline-warning pl-3 pr-3 " style="cursor:auto">En cours </button>
-                                </div>
-                                <div class="col-sm-2  pl-3">
-                                    <button class="btn btn-primary" id="{{ i.id }}" disabled style="cursor:no-drop">Valider</button>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                    {% else%}
-                        <div class="au-task__item au-task__item--success js-load-item">
+                    {% if (i.etat == "TN") or (i.etat == "T") %}
+                        <div id="div{{ i.id }}" class="au-task__item au-task__item--success js-load-item">
                             <div class="au-task__item-inner">
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -96,13 +61,39 @@
                                         <button disabled class="btn btn-outline-success " style="cursor:auto">Terminée </button>
                                     </div>
                                     <div class="col-sm-2  pl-3">
-                                        <button class="btn btn-primary" id="{{ i.id }}" onclick="changerEtat(this.id)">Valider</button>
+                                        <button class="btn btn-success" id="{{ i.id }}" onclick="changerEtat(this.id)">Valider</button>
+                                    </div>
+                                    <div class="col-sm-2  pl-3">
+                                        <button class="btn btn-danger" id="re{{ i.id }}" onclick="">Refaire</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     {% endif %}
                 {% endfor %}
+                {% for i in interventions %}
+                    {% if i.etat== "E" %}
+                        <div id="div{{ i.id }}" class="au-task__item au-task__item--warning js-load-item">
+                            <div class="au-task__item-inner">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h5 class="task">
+                                            <strong style="font-size: larger">{{ i.machine.nomMachine }}</strong>
+                                        </h5>
+                                        <div>  <h6 >{{ i.defaillance.libelle }}</h6></div>
+                                        <span class="time">{{ i.dateLancement |date('d-m-Y à H:i') }}</span></div>
+                                    <div class="col-sm-2 ">
+                                        <button disabled class="btn btn-outline-warning pl-3 pr-3 " style="cursor:auto">En cours </button>
+                                    </div>
+                                    <div class="col-sm-2  pl-3">
+                                        <button class="btn btn-success" id="{{ i.id }}" disabled style="cursor:no-drop" onclick="changerEtat(this.id)">Valider</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
             </div>
 
         </div>
@@ -114,22 +105,18 @@
 {% block js %}
     <script>
         function changerEtat(id) {
+            divid = "div"+id;
             $.ajax({
-                url: '{{ path('test_route') }}',
+                url: '{{ path('changer_etat_intervention') }}',
                 type: "POST",
                 dataType: "json",
                 data: {"key": id,},
                 async: true,
 
                 success: function (data) {
-                    alert("success");
-
-
+                    document.getElementById(divid).setAttribute("hidden","hidden");
                 }
-
-
-            })
-
+            });
 
         }
     </script>
