@@ -1,6 +1,7 @@
 {% extends 'techenicien-dashboard.html.twig' %}
 {% block css %}
-    <link rel="stylesheet" href="{{ asset('css/techniqueHistorique.css') }}" />
+
+    <link rel="stylesheet" href="{{asset('css/app.css')  }}" />
 {% endblock %}
 {% block body %}
     <div class="intro-y datatable-wrapper box p-5 mt-1">
@@ -31,9 +32,13 @@
 {% endblock %}
 {% block js %}
     <!-- BEGIN: JS Assets-->
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=["your-google-map-api]&libraries=places"></script>
-    <script src="https://torf.co/dist/js/app.js"></script>
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+
 
     <!-- END: JS Assets-->
 {% endblock %}

@@ -61,9 +61,11 @@
 
                     </div>
                 </div>
-
+                <div class="au-task-list js-scrollbar3">
                 {% for i in interventions %}
+
                     {% if i.etat== "E" %}
+
                         <div class="au-task__item au-task__item--warning js-load-item">
                         <div class="au-task__item-inner">
                             <div class="row">
@@ -104,7 +106,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
-
+            </div>
         </div>
     </div>
 

@@ -12,5 +12,41 @@
     <orderEntry type="library" name="font-awesome" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="jquery.dataTables" level="application" />
+    <orderEntry type="library" name="A.style.css.pagespeed.cf.eQk9-CoeFP" level="application" />
+    <orderEntry type="library" name="animate" level="application" />
+    <orderEntry type="library" name="animsition" level="application" />
+    <orderEntry type="library" name="app" level="application" />
+    <orderEntry type="library" name="bootstrap-progressbar" level="application" />
+    <orderEntry type="library" name="bootstrap-progressbar-3.3.4" level="application" />
+    <orderEntry type="library" name="Chart.bundle" level="application" />
+    <orderEntry type="library" name="circle-progress" level="application" />
+    <orderEntry type="library" name="cs-skin-elastic" level="application" />
+    <orderEntry type="library" name="email-decode" level="application" />
+    <orderEntry type="library" name="flag-icon" level="application" />
+    <orderEntry type="library" name="font-face" level="application" />
+    <orderEntry type="library" name="fontawesome-all" level="application" />
+    <orderEntry type="library" name="hamburgers" level="application" />
+    <orderEntry type="library" name="jquery-2.1.4" level="application" />
+    <orderEntry type="library" name="jquery-3.2.1" level="application" />
+    <orderEntry type="library" name="jquery.counterup" level="application" />
+    <orderEntry type="library" name="jquery.waypoints" level="application" />
+    <orderEntry type="library" name="main" level="application" />
+    <orderEntry type="library" name="markerclusterer" level="application" />
+    <orderEntry type="library" name="material-design-iconic-font" level="application" />
+    <orderEntry type="library" name="normalize" level="application" />
+    <orderEntry type="library" name="pe-icon-7-filled" level="application" />
+    <orderEntry type="library" name="perfect-scrollbar" level="application" />
+    <orderEntry type="library" name="plugins" level="application" />
+    <orderEntry type="library" name="popper" level="application" />
+    <orderEntry type="library" name="popper.js+bootstrap.js+main.js.pagespeed.jc.9eD6_Mep8S" level="application" />
+    <orderEntry type="library" name="select2" level="application" />
+    <orderEntry type="library" name="slick" level="application" />
+    <orderEntry type="library" name="tailwindcss" level="application" />
+    <orderEntry type="library" name="theme" level="application" />
+    <orderEntry type="library" name="themify-icons" level="application" />
+    <orderEntry type="library" name="wow" level="application" />
+    <orderEntry type="library" name="chart-area-demo" level="application" />
+    <orderEntry type="library" name="chart-pie-demo" level="application" />
+    <orderEntry type="library" name="Chart" level="application" />
   </component>
 </module>
