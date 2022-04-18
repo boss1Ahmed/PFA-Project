@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\DateInteTech;
+use App\Metier\InterventionMetier;
+use App\Metier\TechnicienMetier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,27 +25,49 @@ class TechnicienController extends AbstractController
      */
     public function dashboardAction(Request $request): Response
     {
+        $now = date_create('now');
         $em = $this->getDoctrine()->getManager();
 
-        if ($request->getMethod() == 'POST'){
-//indiquer le debut de la tache
-            $date_inte_tech = new DateInteTech();
-            $now = date_create('now');
-            $intervention = $em->getRepository('App:Intervention')->findOneBy(["id"=>$request->get("id_intervention")]);
-            $date_inte_tech->setTechnicien($this->getUser())
-                ->setIntervention($intervention)
-                ->setDateDebut($now);
-            $intervention->getDateInteTeches()->add($date_inte_tech);
+        $technicien_metier = new TechnicienMetier();
+
+        $mes_taches = $technicien_metier->getMesTaches($em, $this->getUser()->getId());
+
+
+
+        if ($request->getMethod() == 'POST' && !$request->get("fin")){
+            //indiquer le debut de la tache
+            $id_intervention = $request->get("id_intervention");
+            $date_inte_tech = $em->getRepository("App:DateInteTech")->findOneBy(["intervention"=>$id_intervention,"technicien"=>$this->getUser()->getId()]);
+            $intervention = $em->getRepository('App:Intervention')->findOneBy(["id"=>$id_intervention]);
+
+            $date_inte_tech->setDateDebut($now);
+            $intervention->getDateInteTeches();
             $em->persist($date_inte_tech);
+            $em->persist($intervention);
+            $em->flush();
+        }
+
+        if ($request->getMethod() == 'POST' && $request->get("fin")){
+            //indiquer la fin de la tache
+            $id_intervention = $request->get("id_intervention");
+
+            $intervention = $em->getRepository('App:Intervention')->findOneBy(["id"=>$id_intervention]);
+            $date_inte_tech_fin = $em->getRepository("App:DateInteTech")->findOneBy(["intervention"=>$id_intervention,"technicien"=>$this->getUser()->getId()]);
+
+
+            if ($technicien_metier->testTechsTaches($intervention)) {
+                $intervention->setEtat("T");
+            }
+            $date_inte_tech_fin->setDateFin($now);
+
+            $em->persist($date_inte_tech_fin);
             $em->persist($intervention);
             $em->flush();
 
         }
-
-        if ($request->get("fin")){
-            //indiquer la fin de la tache
-        }
-        return $this->render('interventions/intervention_techenicien.html.twig');
+        return $this->render('interventions/intervention_techenicien.html.twig',[
+            "taches"=>$mes_taches
+        ]);
     }
 
 
@@ -52,8 +76,9 @@ class TechnicienController extends AbstractController
      */
     public function interventionsAction(): Response
     {
-        return $this->render('technicien/historique.html.twig', [
-            'controller_name' => 'LoginController',
+        $interventions = $this->getDoctrine()->getRepository("App:Intervention")->findAll();
+        return $this->render('technicien/historique.html.twig',[
+            "interventions"=>$interventions
         ]);
     }
 

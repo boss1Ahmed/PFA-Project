@@ -5,8 +5,9 @@ namespace App\Controller;
 use App\Entity\Defaillance;
 use App\Entity\Machine;
 use App\Entity\TypeDefaillance;
-use AppBundle\Metier\InterventionMetier;
+use App\Metier\InterventionMetier;
 
+use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,12 +28,12 @@ class ConducteurController extends AbstractController
      */
     public function dashboardAction(): Response
     {
-        $interventions = $this->getDoctrine()->getRepository("App:Intervention")->findAll();
+        $criteria = new Criteria();
+        $criteria->where(Criteria::expr()->neq('etat', "TV"));
+        $interventions = $this->getDoctrine()->getRepository("App:Intervention")->matching($criteria);
         return $this->render('interventions/intervention_conducteur.html.twig',[
             "interventions"=>$interventions
         ]);
-
-
     }
 
     /**
@@ -42,27 +43,22 @@ class ConducteurController extends AbstractController
         $em=$this->getDoctrine()->getManager();
        $id = $request->get("key");
        $intervention = $em->getRepository("App:Intervention")->findOneBy(["id"=>$id]);
-       $intervention->setEtat("Terminée");
+       $intervention->setEtat("TV");
        $em->persist($intervention);
        $em->flush();
+
+        return new JsonResponse(null);
     }
 
-
     /**
-     * @Route ("/test",name="test_route")
+     * @return Response
+     * @Route ("/historique",name="historique_intervention_conducteur")
      */
-    public function testAction(Request $request){
-        $defs = $this->getDoctrine()->getManager()->getRepository('App:Defaillance')->findAll();
-        $nbr = count($defs);
-        if ($request->getMethod() == 'POST'){
-            $arrdata = [
-                'nbr'=>$nbr
-            ];
-            return new JsonResponse($arrdata);
-        }else{
-            die("walo");
-        }
-
+    public function interventionListeAction(){
+        $interventions = $this->getDoctrine()->getRepository("App:Intervention")->findAll();
+        return $this->render('conducteur/intervention_Historique_C.html.twig',[
+            "interventions"=>$interventions
+        ]);
     }
     /**
      * @Route("/editprofile",name="conducteur_profile")
@@ -120,5 +116,24 @@ class ConducteurController extends AbstractController
             'secteurs'=>$secteurs,
         ]);
     }
+
+
+    /**
+     * @Route ("/test",name="test_route")
+     */
+    public function testAction(Request $request){
+        $defs = $this->getDoctrine()->getManager()->getRepository('App:Defaillance')->findAll();
+        $nbr = count($defs);
+        if ($request->getMethod() == 'POST'){
+            $arrdata = [
+                'nbr'=>$nbr
+            ];
+            return new JsonResponse($arrdata);
+        }else{
+            die("walo");
+        }
+
+    }
+
 
 }

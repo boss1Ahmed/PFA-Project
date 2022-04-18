@@ -1,0 +1,48 @@
+{% extends 'conducteur-dashboard.html.twig' %}
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('css/techniqueHistorique.css') }}" />
+{% endblock %}
+{% block body %}
+    <div class="intro-y datatable-wrapper box p-5 mt-1">
+        <table class="table table-report table-report--bordered display datatable w-full" >
+            <thead>
+            <tr>
+                <th class="border-b-2 whitespace-no-wrap">Machine</th>
+                <th class="border-b-2 text-center whitespace-no-wrap">Defaillance</th>
+                <th class="border-b-2 text-center whitespace-no-wrap">Date Debut</th>
+                <th class="border-b-2 text-center whitespace-no-wrap">Date Fin</th>
+
+            </tr>
+            </thead>
+
+            <tbody>
+
+            {% for intervention in interventions %}
+            <tr>
+                <td class="border-b">
+                    <div class="font-medium whitespace-no-wrap">{{ intervention.machine.nomMachine }}</div>
+                </td>
+                <td class="text-center border-b">
+                    <div class="text-gray-600 text-xs whitespace-no-wrap">{{ intervention.defaillance.libelle }}</div>
+                </td>
+                <td class="text-center border-b">{{ intervention.dateLancement|date('d-m-Y H:i') }}</td>
+
+                {% if intervention.dateFin == null %}
+                    <td class="text-center border-b pr-2">En cours ...</td>
+                {% else %}
+                    <td class="text-center border-b">{{ intervention.dateFin|date('d-m-Y H:i') }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block js %}
+    <!-- BEGIN: JS Assets-->
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=["your-google-map-api]&libraries=places"></script>
+    <script src="https://torf.co/dist/js/app.js"></script>
+
+    <!-- END: JS Assets-->
+{% endblock %}

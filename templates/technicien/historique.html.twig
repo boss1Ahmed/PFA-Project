@@ -16,16 +16,23 @@
             </tr>
             </thead>
             <tbody>
+            {% for intervention in interventions %}
                 <tr>
-                <td class="border-b">
-                    <div class="font-medium whitespace-no-wrap">Machine 1</div>
-                </td>
-                <td class="text-center border-b">
-                    <div class="text-gray-600 text-xs whitespace-no-wrap">deffaillance 1</div>
-                </td>
-                <td class="text-center border-b">02/04/2022</td>
-                <td class="text-center border-b">03/04/2022</td>
-            </tr>
+                    <td class="border-b">
+                        <div class="font-medium whitespace-no-wrap">{{ intervention.machine.nomMachine }}</div>
+                    </td>
+                    <td class="text-center border-b">
+                        <div class="text-gray-600 text-xs whitespace-no-wrap">{{ intervention.defaillance.libelle }}</div>
+                    </td>
+                    <td class="text-center border-b">{{ intervention.dateLancement|date('d-m-Y H:i') }}</td>
+
+                    {% if intervention.dateFin == null %}
+                        <td class="text-center border-b pr-2">En cours ...</td>
+                    {% else %}
+                        <td class="text-center border-b">{{ intervention.dateFin|date('d-m-Y H:i') }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>

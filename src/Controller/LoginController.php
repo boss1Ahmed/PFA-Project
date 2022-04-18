@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Defaillance;
 use App\Entity\Machine;
 use App\Entity\TypeDefaillance;
-use AppBundle\Metier\InterventionMetier;
+use App\Metier\InterventionMetier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +48,7 @@ class LoginController extends AbstractController
      */
     public function indexact(): Response
     {
-        return $this->render('edit-profile/profile_check-page.html.twig',);
+        return $this->render('edit-profile/profile_check-page.html.twig');
     }
 
 
