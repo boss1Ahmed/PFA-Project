@@ -1,0 +1,45 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block css %}
+    <link rel="stylesheet" href="{{asset('css/app.css')  }}" />
+{% endblock %}
+{% block body %}
+    <div class="intro-y datatable-wrapper box p-5 mt-5">
+        <table class="table table-report table-report--bordered display datatable w-full" >
+            <thead>
+            <th>Interventions</th>
+            <th>Conducteur</th>
+            <th>Machine</th>
+            <th>Defaillance</th>
+            <th>Date_lancement</th>
+            <th> Date_fin &nbsp </th>
+
+            <th>Urgence</th>
+            <th>Etat</th>
+            </thead>
+            <tbody>
+
+            <td>Pane</td>
+            <td>Hassan AZ</td>
+            <td>Machine A</td>
+            <th>vice</th>
+            <th>2022-03-28 16:44:34</th>
+            <th>2022-03-29 16:44:34</th>
+
+            <th>Oui</th>
+            <th>Terminée</th>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block js %}
+    <!-- BEGIN: JS Assets-->
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+
+
+    <!-- END: JS Assets-->
+{% endblock %}
