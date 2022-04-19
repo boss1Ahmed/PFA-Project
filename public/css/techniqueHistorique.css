@@ -36346,7 +36346,7 @@ video {
 .dropdown .dropdown-box .dropdown-box__content .tab-content .tab-content__pane {
     visibility: hidden;
 }
-
+/*
 .modal {
     margin-top: -10000px;
     margin-left: -10000px;
@@ -36413,6 +36413,7 @@ video {
     }
 }
 
+*/
 .nav-tabs .active {
     border-bottom-width: 2px;
     --border-opacity: 1;

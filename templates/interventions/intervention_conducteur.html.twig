@@ -1,20 +1,8 @@
 {% extends 'conducteur-dashboard.html.twig' %}
 {% block css %}
-
-
-
-
-
-
-
     <link href="https://colorlib.com/polygon/cooladmin/css/theme.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css"
-          rel="stylesheet" media="all">
-
-
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 {% endblock %}
-
-
 
 {% block body %}
     <div class="row">
@@ -46,6 +34,7 @@
                     </div>
                 </div>
                 <div class="au-task-list js-scrollbar3">
+                    <div id="testdiv">
                 {% for i in interventions %}
                     {% if (i.etat == "TN") or (i.etat == "T") %}
                         <div id="div{{ i.id }}" class="au-task__item au-task__item--success js-load-item">
@@ -64,13 +53,15 @@
                                         <button class="btn btn-success" id="{{ i.id }}" onclick="changerEtat(this.id)">Valider</button>
                                     </div>
                                     <div class="col-sm-2  pl-3">
-                                        <button class="btn btn-danger" id="re{{ i.id }}" onclick="">Refaire</button>
+                                        <button class="btn btn-danger" id="re{{ i.id }}" onclick="refaire(this.id)">Refaire</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     {% endif %}
                 {% endfor %}
+                    </div>
+                    <div>
                 {% for i in interventions %}
                     {% if i.etat== "E" %}
                         <div id="div{{ i.id }}" class="au-task__item au-task__item--warning js-load-item">
@@ -83,21 +74,26 @@
                                         <div>  <h6 >{{ i.defaillance.libelle }}</h6></div>
                                         <span class="time">{{ i.dateLancement |date('d-m-Y à H:i') }}</span></div>
                                     <div class="col-sm-2 ">
-                                        <button disabled class="btn btn-outline-warning pl-3 pr-3 " style="cursor:auto">En cours </button>
+                                        <button disabled class="btn btn-outline-warning pl-3 pr-3" id="etat{{ i.id }}" style="cursor:auto">En cours </button>
                                     </div>
                                     <div class="col-sm-2  pl-3">
                                         <button class="btn btn-success" id="{{ i.id }}" disabled style="cursor:no-drop" onclick="changerEtat(this.id)">Valider</button>
+                                    </div>
+                                    <div class="col-sm-2  pl-3">
+                                        <button  hidden="hidden" class="btn btn-danger" id="re{{ i.id }}" onclick="">Refaire</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     {% endif %}
                 {% endfor %}
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
+
 
 {% endblock %}
 
@@ -119,6 +115,32 @@
             });
 
         }
+    </script>
+    <script>
+        const url = new URL('http://localhost:3000/hub');
+        url.searchParams.append('topic', 'http://example.com/ping');
+        const eventSource = new EventSource(url);
+        eventSource.onmessage = event => {
+            console.log(event.data);
+
+            const div = document.getElementById("div"+event.data);
+            const but = document.getElementById(event.data);
+            const etat = document.getElementById("etat"+event.data);
+            const refaire = document.getElementById("re"+event.data);
+            refaire.removeAttribute("hidden");
+            etat.textContent ="Terminée";
+            etat.setAttribute("class","btn btn-outline-success");
+            but.removeAttribute("disabled");
+            but.removeAttribute("style")
+            div.setAttribute("class","au-task__item au-task__item--success js-load-item");
+        }
+    </script>
+
+    <script>
+        function refaire(){
+
+        }
+
     </script>
 
 {% endblock %}

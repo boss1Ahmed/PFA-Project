@@ -16,10 +16,9 @@
           media="all">
     <link href="https://colorlib.com/polygon/cooladmin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css"
           rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet"
-          media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+
+
+
     <link href="https://colorlib.com/polygon/cooladmin/vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="https://colorlib.com/polygon/cooladmin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet"
           media="all">
@@ -86,6 +85,8 @@
                         </div>
                         {% endif %}
                     {% endfor %}
+
+                    <div id="debutDiv">
                     {% for tache in taches %}
                         {% if tache.dateDebut == null %}
                         <div class="au-task__item au-task__item--primary" id="div{{ tache.intervention.id }}">
@@ -108,12 +109,11 @@
                         </div>
                         {% endif %}
                     {% endfor %}
-
+                    </div>
                 </div>
 
             </div>
         </div>
-    </div>
     </div>
 
 
@@ -155,6 +155,24 @@
         </div>
     </div>
 
+    <div class="au-task__item au-task__item--primary" id="divToClone" hidden="hidden">
+        <div class="au-task__item-inner">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h5 class="task">
+                        <strong style="font-size: larger" id="nomMachine">walo</strong>
+                    </h5>
+                    <div>  <h6 id="libelleDef" ></h6></div>
+                    <span class="time" id="dateLancement"></span>
+                </div>
+                <div class="col-sm-2  pl-2">
+                    <button onclick="select(this.id)" class="btn btn-success" data-toggle="modal" id="btnDebut"
+                            data-target="#confirm" >Début
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -212,23 +230,50 @@
         }
 
 
-
-
         function confirm() {
             document.getElementById(attr).textContent = "Fin";
             document.getElementById(attr).className = "btn btn-danger pl-4 pr-4 "
             document.getElementById("annuler").click();
 
             if (bool){
+                alert("walo");
+
+
                 document.getElementById("div" + attr).setAttribute("hidden","hidden");
                 bool = false;
                 addDate_inter_tech_fin(attr)
+
+
 
             }else{
                 addDate_inter_tech_debut(attr)
             }
 
         }
+    </script>
+
+    <script>
+        const url = new URL('http://localhost:3000/hub');
+        url.searchParams.append('topic', 'http://example.com/ping1');
+        const eventSource = new EventSource(url);
+        eventSource.onmessage = event => {
+            donnees = JSON.parse(event.data);
+            console.log(donnees.date);
+
+
+            var newdiv = $("#divToClone").clone();
+
+            newdiv.prop("id","div"+donnees.id) ;
+            newdiv.find('#nomMachine').text(donnees.nom);
+            newdiv.find('#dateLancement').text(donnees.date);
+            newdiv.find('#libelleDef').text(donnees.def);
+            newdiv.find('#btnDebut').prop("id",donnees.id);
+            newdiv.removeAttr("hidden");
+            newdiv.appendTo('#debutDiv');
+
+        }
+
+
     </script>
 
 

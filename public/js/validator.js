@@ -16,8 +16,11 @@ $bol4 = false;
 function buttonvalidator(){
     if ($bol1 && $bol2 && $bol3 && $bol4){
         $button.removeAttr("disabled");
+        $button.removeAttr("style");
+
         //alert("nice!");
     }else{
+        $button.attr("style","cursor:no-drop");
         $button.attr("disabled",true);
     }
 }
@@ -29,10 +32,13 @@ function validatemachine(){
 
     if(checkString($machineval) ){
         $warn.removeClass(" fa-warning");
+        $warn.addClass("fa-check");
         $bol1 = true;
         buttonvalidator();
     }else{
+        $warn.removeClass(" fa-check");
         $warn.addClass("fa-warning");
+        $warn.setAttribute("class","fa fa-warning")
         $bol1 = false;
         buttonvalidator();
     }
@@ -45,9 +51,11 @@ function validatedef(){
 
     if (checkString($deffaillanceval)){
         $warn1.removeClass("fa-warning");
+        $warn1.addClass("fa-check");
         $bol2 = true;
         buttonvalidator();
     }else{
+        $warn1.removeClass("fa-check");
         $warn1.addClass("fa-warning");
         $bol2 = false;
         buttonvalidator();
@@ -61,9 +69,11 @@ function validatesecteur(){
 
     if (checkString($secteurval)){
         $warn2.removeClass("fa-warning");
+        $warn2.addClass("fa-check");
         $bol3 = true;
         buttonvalidator();
     }else{
+        $warn2.removeClass("fa-check");
         $warn2.addClass("fa-warning");
         $bol3 = false;
         buttonvalidator();

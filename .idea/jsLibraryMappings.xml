@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{bootstrap, font-awesome, jquery, jquery.dataTables, material-design-iconic-font, theme}" />
+    <file url="PROJECT" libraries="{app, bootstrap, bootstrap-progressbar-3.3.4, font-awesome, jquery, jquery.dataTables, material-design-iconic-font, perfect-scrollbar, slick, theme}" />
   </component>
 </project>
