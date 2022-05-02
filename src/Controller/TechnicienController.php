@@ -10,7 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\Hub;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Publisher;
+use Symfony\Component\Mercure\Update;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use function MongoDB\BSON\toJSON;
 
 /**
  * Class TechnicienController
@@ -20,10 +26,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TechnicienController extends AbstractController
 {
+
     /**
-     * @Route("/",name="dashboard_tehcnicien")
+     * @Route("/",name="dashboard_tehcnicien",)
+     *
      */
-    public function dashboardAction(Request $request): Response
+    public function dashboardAction(Request $request,HubInterface $hub): Response
     {
         $now = date_create('now');
         $em = $this->getDoctrine()->getManager();
@@ -56,6 +64,8 @@ class TechnicienController extends AbstractController
 
 
             if ($technicien_metier->testTechsTaches($intervention)) {
+                $update = new Update("http://example.com/ping",$id_intervention,false);
+                $hub->publish($update);
                 $intervention->setEtat("T");
             }
             $date_inte_tech_fin->setDateFin($now);
@@ -91,6 +101,8 @@ class TechnicienController extends AbstractController
             "base"=>"techenicien"
         ]);
     }
+
+
 
 
 }

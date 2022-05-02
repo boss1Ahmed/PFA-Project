@@ -24,7 +24,13 @@ services:
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
+        arguments: [ 'controller.service_arguments']
+
+
+    App\Controller\TechnicienController:
+        arguments: [ '@messenger.default_bus' ]
+        autowire: true
+        autoconfigure: true
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -1,5 +1,8 @@
 
 {% extends 'conducteur-dashboard.html.twig' %}
+{% block unwanted_css %}
+<link href="{{ asset('css/creer_intervention_cee.css') }}" rel="stylesheet">
+{% endblock %}
 {% block css %}
     <link href="../../../../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
     <link href="../../../../vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
@@ -54,7 +57,7 @@
 
                        <div class="col-md-6">
 
-                                    <label class="label">Machine <span class="fa fa-check fa-warning" id="warn"></span></label>
+                                    <label class="label">Machine <span class="fa fa-warning" id="warn"></span></label>
                                     <div class="rs-select2 js-select-simple"  >
                                         <select id="machine_select" name="machine" required="required" class="" onchange="choice1(this)"  >
                                             <option disabled="disabled"  selected="selected">Selectionnez la machine</option>
@@ -70,7 +73,7 @@
 
                                <div class="col-md-6 ">
 
-                                       <label class="label">Secteur <span class="fa fa-check fa-warning" id="warn2"></span></label>
+                                       <label class="label">Secteur <span class="fa  fa-warning" id="warn2"></span></label>
                                        <div class="rs-select2 js-select-simple" >
                                            <select id="secteur_select" name="secteur" class="js-example-tags" >
                                                <option disabled="disabled" selected="selected">selectionnez secteur</option>
@@ -85,7 +88,7 @@
 
                                <div class="col-12 mt-3" hidden id="deff" >
 
-                                    <label class="label">Defaillance <span class="fa fa-check fa-warning" id="warn1"></span></label>
+                                    <label class="label">Defaillance <span class="fa  fa-warning" id="warn1"></span></label>
                                     <div class="rs-select2 js-select-simple" >
                                         <select id="defaillance" name="defaillance" class="js-example-tags"></select>
                                     </div>
@@ -105,7 +108,7 @@
 
                             <div class="col-md-6 mt-3">
 
-                                    <label class="label">Urgence <span class="fa fa-check fa-warning" id="warn3"></span></label>
+                                    <label class="label">Urgence <span class="fa  fa-warning" id="warn3"></span></label>
                                     <div class="p-t-10">
                                         <label class="radio-container m-r-45">oui
                                             <input id="urgence" type="radio" value="oui" name="urgence">
@@ -126,7 +129,7 @@
 
 
                         <div class="p-t-15">
-                            <button class="btn btn--radius-2 btn--blue" type="submit" id="sub_button" disabled="disabled" >Creer une intervention <span class="fa fa-plus"></span></button>
+                            <button class="btn btn--radius-2 btn--blue" type="submit" id="sub_button" disabled="disabled" style="cursor:no-drop" >Creer une intervention <span class="fa fa-plus"></span></button>
                         </div>
                     </form>
                 </div>

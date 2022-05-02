@@ -4,6 +4,7 @@
 namespace App\Metier;
 
 
+use App\Entity\DateInteTech;
 use App\Entity\Defaillance;
 use App\Entity\Intervention;
 use App\Entity\Machine;
@@ -13,11 +14,13 @@ use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 
 class InterventionMetier
 {
 
-    public function createIntervention(Request $request , ObjectManager $em , User $user){
+    public function createIntervention(Request $request , ObjectManager $em , User $user , User $technicien , HubInterface $hub){
 
         //date prévu
         $date_fin = date('Y-m-d h:i:s', strtotime($request->get('date_fin'))) ;
@@ -57,13 +60,33 @@ class InterventionMetier
         $intervention
             ->setConducteur($user)
             ->setDateLancement($now)
-
             ->setMachine($machie)
-            ->setDateFin($now)
-            ->setDescription("walo")
-            ->setDefaillance($defaillance);
+            ->setDateFin(null)
+            ->setEtat("E")
+            ->setDescription("")
+            ->setDefaillance($defaillance)
+            ->setUrgence($urgence);
         $em->persist($intervention);
+
+        //affectation du technicien
+        $tache = new DateInteTech();
+        $tache->setIntervention($intervention)
+            ->setTechnicien($technicien);
+        $em->persist($tache);
+
         $em->flush();
+        $this->informTechnicians($intervention,$hub);
+    }
+
+    public function informTechnicians(Intervention $intervention,HubInterface $hub){
+        $donnees = [
+            'id'=>$intervention->getId(),
+            'date'=>$intervention->getDateLancement()->format('d-m-Y à H:i'),
+            'nom'=>$intervention->getMachine()->getNomMachine(),
+            'def'=>$intervention->getDefaillance()->getLibelle()
+        ];
+        $update = new Update("http://example.com/ping1",json_encode($donnees),false);
+        $hub->publish($update);
     }
 
 

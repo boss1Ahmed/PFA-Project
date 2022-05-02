@@ -1,0 +1,36 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('css/techniqueHistorique.css') }}" />
+{% endblock %}
+{% block body %}
+    <div class="intro-y datatable-wrapper box p-5 mt-5">
+        <table id="myTable" class="table table-report table-report--bordered display datatable w-full" >
+            <thead>
+            <th>Nom</th>
+            <th>Prénom</th>
+
+            <th>Interventions</th>
+
+
+            </thead>
+            <tbody>
+
+            <td>el ahmadi</td>
+            <td>hassan</td>
+
+
+            <td>pane</td>
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block js %}
+    <!-- BEGIN: JS Assets-->
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+{% endblock %}
