@@ -62,6 +62,21 @@ class User extends BaseUser
      */
     private $poste;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $addresse;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tele;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dateDeNaissance;
+
     public function __construct()
     {
         parent::__construct();
@@ -204,6 +219,42 @@ class User extends BaseUser
     public function setPoste(?string $poste): self
     {
         $this->poste = $poste;
+
+        return $this;
+    }
+
+    public function getAddresse(): ?string
+    {
+        return $this->addresse;
+    }
+
+    public function setAddresse(?string $addresse): self
+    {
+        $this->addresse = $addresse;
+
+        return $this;
+    }
+
+    public function getTele(): ?int
+    {
+        return $this->tele;
+    }
+
+    public function setTele(?int $tele): self
+    {
+        $this->tele = $tele;
+
+        return $this;
+    }
+
+    public function getDateDeNaissance(): ?\DateTimeInterface
+    {
+        return $this->dateDeNaissance;
+    }
+
+    public function setDateDeNaissance(?\DateTimeInterface $dateDeNaissance): self
+    {
+        $this->dateDeNaissance = $dateDeNaissance;
 
         return $this;
     }

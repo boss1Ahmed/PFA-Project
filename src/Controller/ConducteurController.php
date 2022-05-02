@@ -63,8 +63,28 @@ class ConducteurController extends AbstractController
     /**
      * @Route("/editprofile",name="conducteur_profile")
      */
-    public function profileAction(): Response
+    public function profileAction(Request $request): Response
     {
+        if($request->getMethod()=='POST' ){
+            $firstname=$request->get('nom');
+            $lastname=$request->get('prenom');
+            $mail=$request->get('mail');
+            $addresse=$request->get('addresse');
+            $tel=$request->get('tel');
+            $birthday=$request->get('birthday');
+            $user=$this->getUser();
+            $user->setNom($firstname);
+            $user->setPrenom($lastname);
+            $user->setEmail($mail);
+            $user->setTele($tel);
+            $user->setAddresse($addresse);
+           // $user->setDateDeNaissance($birthday);
+            $em=$this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+        }
+
         return $this->render('edit-profile/edit_profile-page.html.twig', [
             "base"=>"conducteur"
         ]);

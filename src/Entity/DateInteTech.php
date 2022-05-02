@@ -23,7 +23,7 @@ class DateInteTech
     private $dateDebut;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",nullable="true")
      */
     private $dateFin;
 
