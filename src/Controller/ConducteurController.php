@@ -7,12 +7,14 @@ use App\Entity\Machine;
 use App\Entity\TypeDefaillance;
 use App\Metier\InterventionMetier;
 
+use App\Metier\TechnicienMetier;
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -94,9 +96,8 @@ class ConducteurController extends AbstractController
      * @Route ("/creerintervention", name="creation_intervention")
      *
      */
-    public function createInterventionAction(Request $request)
+    public function createInterventionAction(Request $request , HubInterface $hub)
     {
-
         $em = $this->getDoctrine()->getManager();
         $machines = $em->getRepository(Machine::class)->findAll();
         $defaillances = $em->getRepository(Defaillance::class)->findAll();
@@ -104,12 +105,16 @@ class ConducteurController extends AbstractController
 
         //Creer l'intervention
         //cet attribut $request->get('machine_name') est utilisée pour differentié
-        // entre la creation de l'intervention est la recherche des defaillances
+        //entre la creation de l'intervention est la recherche des defaillances
         if ($request->getMethod() == 'POST' && !$request->get('machine_name')) {
+            $nom_secteur = $request->get('secteur');
+            $secteur = $em->getRepository("App:TypeDefaillance")->findOneBy(["nom"=>$nom_secteur]);
 
             $metier = new InterventionMetier();
+            $tech_metier = new TechnicienMetier();
+            $technicien = $tech_metier->getAvailableTecnicien($secteur->getId(),$em);
             $user = $this->getUser();
-            $metier->createIntervention($request, $em, $user);
+            $metier->createIntervention($request, $em, $user,$technicien,$hub);
 
         }
 
