@@ -1,0 +1,27 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block title %}
+    Defaillance N° {{ defaillance.id }}
+{% endblock %}
+{% block body %}
+    <div class="container py-md-5">
+        <div class="row">
+            <div class="col-3">
+                <h4 class="mb-4">Defaillance N° {{ defaillance.id }}</h4>
+            </div>
+        </div>
+        <div class="col-11">
+            <div class="form-group col-md-6">
+                <label>Libelle de la defaillance</label>
+                <input type="text" class="form-control" readonly value="{{ defaillance.libelle}}">
+            </div>
+        </div>
+        <div class="col-11">
+            <div class="form-group col-md-6">
+                <label>Type de la defaillance</label>
+                <input type="text" class="form-control" readonly value="{{ defaillance.typeDefaillance.nom }}">
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}

@@ -25,19 +25,20 @@ class PieceRechange
     private $libelle;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Intervention::class, mappedBy="piecesRechange")
-     */
-    private $interventions;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Defaillance::class, mappedBy="piecesRechange")
      */
     private $defaillances;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PiecesofTache::class, mappedBy="pieceRechange")
+     */
+    private $taches;
 
     public function __construct()
     {
         $this->interventions = new ArrayCollection();
         $this->defaillances = new ArrayCollection();
+        $this->taches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,33 +54,6 @@ class PieceRechange
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Intervention>
-     */
-    public function getInterventions(): Collection
-    {
-        return $this->interventions;
-    }
-
-    public function addIntervention(Intervention $intervention): self
-    {
-        if (!$this->interventions->contains($intervention)) {
-            $this->interventions[] = $intervention;
-            $intervention->addPiecesRechange($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIntervention(Intervention $intervention): self
-    {
-        if ($this->interventions->removeElement($intervention)) {
-            $intervention->removePiecesRechange($this);
-        }
 
         return $this;
     }
@@ -106,6 +80,36 @@ class PieceRechange
     {
         if ($this->defaillances->removeElement($defaillance)) {
             $defaillance->removePiecesRechange($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PiecesofTache>
+     */
+    public function getTaches(): Collection
+    {
+        return $this->taches;
+    }
+
+    public function addTach(PiecesofTache $tach): self
+    {
+        if (!$this->taches->contains($tach)) {
+            $this->taches[] = $tach;
+            $tach->setPieceRechange($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTach(PiecesofTache $tach): self
+    {
+        if ($this->taches->removeElement($tach)) {
+            // set the owning side to null (unless already changed)
+            if ($tach->getPieceRechange() === $this) {
+                $tach->setPieceRechange(null);
+            }
         }
 
         return $this;

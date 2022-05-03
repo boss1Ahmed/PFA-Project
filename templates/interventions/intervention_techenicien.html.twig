@@ -18,13 +18,13 @@
           rel="stylesheet" media="all">
 
 
-
     <link href="https://colorlib.com/polygon/cooladmin/vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="https://colorlib.com/polygon/cooladmin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet"
           media="all">
 
-    <link href="https://colorlib.com/polygon/cooladmin/css/theme.css" rel="stylesheet" media="all">
+    <link href="{{ asset('css/theme.css') }}" rel="stylesheet" media="all">
 
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
 
 
 {% endblock %}
@@ -32,6 +32,7 @@
 
 
 {% block body %}
+
     <div class="row">
         <div class="col-lg-12">
             <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
@@ -45,9 +46,12 @@
                 <div class="au-task js-list-load">
                     <div class="au-task__title">
                         <div class="row">
-                            <div class="col-sm-10">
+                            <div class="col-sm-6">
                                 <h3 id="h3"></h3>
                                 <h4><strong>Vos interventions</strong></h4>
+                            </div>
+                            <div class="col-sm-4">
+                                <h4><strong>Pieces de rechange</strong></h4>
                             </div>
 
 
@@ -66,17 +70,27 @@
                         <div class="au-task__item au-task__item--danger" id="div{{ tache.intervention.id }}">
                             <div class="au-task__item-inner">
                                 <div class="row">
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-6">
                                         <h5 class="task">
-                                            <a data-toggle="modal"  data-target="#infos">
+                                            <a data-toggle="modal"  data-target="#infos{{ tache.intervention.id }}" >
                                             <strong style="font-size: larger">{{ tache.intervention.machine.nomMachine }}</strong>
                                             </a>
                                         </h5>
                                         <div>  <h6 >{{ tache.intervention.defaillance.libelle }}</h6></div>
                                         <span class="time">{{ tache.intervention.dateLancement |date('d-m-Y à H:i') }}</span>
                                     </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info" id="" onclick="ajouter(this.id)" data-toggle="modal" data-target="#add">Ajouter</button>
+                                        <div class="rs-select2 js-select-simple">
+                                            <select style="width: 50%!important;" class="js-example-tags">
+                                                <option disabled="disabled">Selectionnez une piece</option>
+                                                <option>piece 1</option>
+                                                <option>piece 2</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-sm-2  pl-2">
-                                        <button onclick="select(this.id)" class="btn btn-danger" data-toggle="modal"
+                                        <button onclick="select(this.id)" class="btn btn-danger pl-4 pr-4" data-toggle="modal"
                                                 data-target="#confirm" id="{{ tache.intervention.id }}">Fin
                                         </button>
                                     </div>
@@ -94,7 +108,9 @@
                                 <div class="row">
                                     <div class="col-sm-10">
                                         <h5 class="task">
+                                            <a data-toggle="modal"  data-target="#infos" >
                                             <strong style="font-size: larger">{{ tache.intervention.machine.nomMachine }}</strong>
+                                            </a>
                                         </h5>
                                         <div>  <h6 >{{ tache.intervention.defaillance.libelle }}</h6></div>
                                         <span class="time">{{ tache.intervention.dateLancement |date('d-m-Y à H:i') }}</span>
@@ -136,7 +152,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="infos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    {% for tache in taches %}
+    <div class="modal fade" id="infos{{ tache.intervention.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -146,14 +163,16 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" id="confirm_text">text</div>
+                <div class="modal-body" id="confirm_text">{{ tache.intervention.machine.nomMachine }}</div>
+                <div class="modal-body"><a href="{{ vich_uploader_asset(tache.intervention.machine) }}" ><span class="fa fa-file"></span> documentation</a></div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button"  data-dismiss="modal">Non</button>
+                    <button class="btn btn-secondary" type="button"  data-dismiss="modal">Fermer</button>
 
                 </div>
             </div>
         </div>
     </div>
+    {% endfor %}
 
     <div class="au-task__item au-task__item--primary" id="divToClone" hidden="hidden">
         <div class="au-task__item-inner">
@@ -174,9 +193,60 @@
         </div>
     </div>
 
+    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cofirmation</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="confirm_text">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label>la Pièce:</label>
+                            <div class="rs-select2 js-select-simple">
+                                <select style="width: 50%!important;" class="js-example-tags">
+                                    <option disabled="disabled">Selectionnez une piece</option>
+                                    <option>piece 1</option>
+                                    <option>piece 2</option>
+                                </select>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>quantité</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="annuler" data-dismiss="modal">Non</button>
+                    <button class="btn btn-primary" onclick="confirm()">Oui</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block js %}
+    <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function (){
+            $(".js-example-tags").select2({
+                tags: true,
+                width: 'resolve',
+            });
+        });
+    </script>
+
+
     <script>
         function addDate_inter_tech_debut(id) {
             $.ajax({
@@ -205,7 +275,7 @@
                 },
                 async: true,
                 success: function (data) {
-                    alert(id)
+
                 },
             });
 
@@ -236,14 +306,10 @@
             document.getElementById("annuler").click();
 
             if (bool){
-                alert("walo");
-
 
                 document.getElementById("div" + attr).setAttribute("hidden","hidden");
                 bool = false;
                 addDate_inter_tech_fin(attr)
-
-
 
             }else{
                 addDate_inter_tech_debut(attr)
@@ -259,22 +325,20 @@
         eventSource.onmessage = event => {
             donnees = JSON.parse(event.data);
             console.log(donnees.date);
+            if (donnees.id_tech =={{ app.user.id }}) {
+                var newdiv = $("#divToClone").clone();
 
-
-            var newdiv = $("#divToClone").clone();
-
-            newdiv.prop("id","div"+donnees.id) ;
-            newdiv.find('#nomMachine').text(donnees.nom);
-            newdiv.find('#dateLancement').text(donnees.date);
-            newdiv.find('#libelleDef').text(donnees.def);
-            newdiv.find('#btnDebut').prop("id",donnees.id);
-            newdiv.removeAttr("hidden");
-            newdiv.appendTo('#debutDiv');
-
+                newdiv.prop("id", "div" + donnees.id);
+                newdiv.find('#nomMachine').text(donnees.nom);
+                newdiv.find('#dateLancement').text(donnees.date);
+                newdiv.find('#libelleDef').text(donnees.def);
+                newdiv.find('#btnDebut').prop("id", donnees.id);
+                newdiv.removeAttr("hidden");
+                newdiv.appendTo('#debutDiv');
+            }
         }
-
-
     </script>
+
 
 
 {% endblock %}

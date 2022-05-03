@@ -1,0 +1,38 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block title %}
+    Liste des Machines
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{asset('css/techniqueHistorique.css')  }}" />
+{% endblock %}
+{% block body %}
+    <div class="intro-y datatable-wrapper box p-5 mt-5">
+        <table  class="table table-report table-report--bordered display datatable w-full"  id="myTable">
+            <thead>
+            <tr>
+                <th>machine</th>
+                <th>nom machine</th>
+                <th>date d'installation</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for machine in machines %}
+            <tr>
+                <td><a href="{{ path('administrer_machine',{'id':machine.id}) }}" >{{ machine.id }}</a></td>
+                <td>{{ machine.nomMachine }}</td>
+                <td>{{ machine.dateInstall|date('d-m-Y à H:i') }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock%}
+{% block js %}
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+
+{% endblock %}

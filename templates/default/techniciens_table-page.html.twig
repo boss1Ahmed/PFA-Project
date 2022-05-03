@@ -1,0 +1,45 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block title %}Liste des Techniciens{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('css/techniqueHistorique.css') }}" />{% endblock %}
+{% block body %}
+    <div class="intro-y datatable-wrapper box p-5 mt-5">
+        <table id="myTable" class="table table-report table-report--bordered display datatable w-full" >
+            <thead>
+            <tr>
+                <th>Technicien</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Secteur</th>
+
+                <th >Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tech in techs %}
+               <tr>
+                    <td><a href="{{ path('administrer_profile',{'id':tech.id}) }}">{{ tech.id }}</a></td>
+                    <td>{{ tech.nom }}</td>
+                    <td>{{ tech.prenom }}</td>
+                    <td><a href="{{ path('administrer_type_defaillance',{'id':tech.typeTech.id}) }}" >{{ tech.typeTech.nom }}</a></td>
+                    <td>
+                        <div class="flex  ">
+                            <a class="flex items-center mr-3" href=""> <i data-feather="check-square" class="w-4 h-4 mr-1"></i> Edit </a>
+                            <a class="flex items-center text-theme-6" href=""> <i data-feather="trash-2" class="w-4 h-4 mr-1"></i> Delete </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+{% endblock %}

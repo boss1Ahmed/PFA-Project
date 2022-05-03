@@ -1,0 +1,133 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block css %}
+    <link href="{{ asset('css/edit_profile-page.css') }}">
+    <link rel="stylesheet" href="{{asset('css/techniqueHistorique.css')  }}" />
+{% endblock %}
+{% block title %}
+    profile du
+    {% if user.poste == 'T' %} technicien{% else %} conducteur{% endif %}
+    N° {{ user.id }}
+{% endblock %}
+{% block body %}
+    <div class="container  intro-y">
+    <div class="row py-md-3">
+        <div class="col-xl-4">
+            <div class="py-md-0">
+            <!-- Profile picture card-->
+            <div class="card mb-xl-4">
+                <div class="card-header">Profile Picture</div>
+                <div class="card-body text-center">
+                    <!-- Profile picture image-->
+                    <img class="img-account-profile rounded-circle mb-3" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                    <!-- Profile picture help block-->
+
+                    <!-- Profile picture upload button-->
+                    <button class="btn btn-primary" type="button">Télécharger une image</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header"> Details du compte</div>
+                <div class="card-body">
+                    <form>
+                        <!-- Form Group (username)-->
+
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (first name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputFirstName">Prénom</label>
+                                <input class="form-control" id="inputFirstName" type="text" value="{{ user.nom }}">
+                            </div>
+                            <!-- Form Group (last name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputLastName">Nom</label>
+                                <input class="form-control" id="inputLastName" type="text" value="{{ user.username }}">
+                            </div>
+                        </div>
+                        <!-- Form Row        -->
+
+                        <!-- Form Group (email address)-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">Email</label>
+                            <input class="form-control" id="inputEmailAddress" type="email"  value="{{ user.email }}">
+                        </div>
+                        <!-- Form Row-->
+                        {% if user.poste == 'T' %}
+                        <div class="mb-3">
+                            <label class="small mb-1" for="secteur">Secteur</label>
+                            <input class="form-control" id="secteur" type="text"  value="{{ user.typeTech.nom }}">
+                        </div>
+                        {% endif %}
+                        <!-- Save changes button-->
+                        <div class="row  mb-3">
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" type="button">Enregistrer</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-secondary" type="button">Annuler</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mr-2"><hr></div>
+    <div class="row intro-y py-md-2">
+        <div class="row">
+            <div class="">
+                <h4 class="mb-3">
+                    {% if user.poste == 'T' %} Interventions réalisées par ce technicien{% else %} Inerventions lancées par ce conducteur{% endif %}
+
+                </h4>
+            </div>
+        </div>
+        <div class=" datatable-wrapper  ">
+            <table class="table table-report table-report--bordered display datatable w-full"  id="myTable">
+                <thead>
+                <tr>
+                    <td>intervention</td>
+                    <td>date debut</td>
+                    <td>date fin</td>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% if user.poste == 'T' %}
+                {% for tache in user.dateInteTeches %}
+                    <tr>
+                        <td><a href="{{ path('show_intervention',{'id':tache.intervention.id}) }}">{{ tache.intervention.id }}</td>
+                        <td>{{ tache.intervention.dateLancement|date('d-m-Y à H:i') }}</td>
+                        <td>{{ tache.intervention.dateFin|date('d-m-Y à H:i') }}</td>
+                    </tr>
+                {% endfor %}
+                {% else %}
+
+                    {% for intervention in user.intersConducteur %}
+                        <tr>
+                        <td><a href="{{ path('show_intervention',{'id':intervention.id}) }}">{{ intervention.id }}</td>
+                        <td>{{ intervention.dateLancement|date('d-m-Y à H:i') }}</td>
+                        <td>{{ intervention.dateFin|date('d-m-Y à H:i') }}</td>
+                        </tr>
+                    {% endfor %}
+
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+
+{% endblock %}

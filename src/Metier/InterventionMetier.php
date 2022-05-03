@@ -11,6 +11,7 @@ use App\Entity\Machine;
 use App\Entity\TypeDefaillance;
 use App\Entity\User;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,32 +63,50 @@ class InterventionMetier
             ->setDateLancement($now)
             ->setMachine($machie)
             ->setDateFin(null)
-            ->setEtat("E")
+            ->setEtat("N")
             ->setDescription("")
             ->setDefaillance($defaillance)
             ->setUrgence($urgence);
         $em->persist($intervention);
 
+        $em->flush();
+        $this->informAdmin($hub);
         //affectation du technicien
-        $tache = new DateInteTech();
+        /*$tache = new DateInteTech();
         $tache->setIntervention($intervention)
             ->setTechnicien($technicien);
         $em->persist($tache);
 
         $em->flush();
-        $this->informTechnicians($intervention,$hub);
+        $this->informTechnicians($intervention,$technicien->getId(),$hub);
+        */
     }
 
-    public function informTechnicians(Intervention $intervention,HubInterface $hub){
+    public function informTechnicians(Intervention $intervention,int $id_tech,HubInterface $hub){
         $donnees = [
             'id'=>$intervention->getId(),
             'date'=>$intervention->getDateLancement()->format('d-m-Y à H:i'),
             'nom'=>$intervention->getMachine()->getNomMachine(),
-            'def'=>$intervention->getDefaillance()->getLibelle()
+            'def'=>$intervention->getDefaillance()->getLibelle(),
+            'id_tech'=>$id_tech
         ];
         $update = new Update("http://example.com/ping1",json_encode($donnees),false);
         $hub->publish($update);
     }
 
+    public function affecter(User $tech,Intervention $intervention,EntityManager $em){
+        $tache = new DateInteTech();
+        $tache->setIntervention($intervention)
+            ->setTechnicien($tech);
+        $em->persist($tache);
+
+        $em->flush();
+    }
+
+    public function informAdmin(HubInterface $hub){
+
+        $update = new Update("http://example.com/pingAdmin",json_encode('walo'),false);
+        $hub->publish($update);
+    }
 
 }

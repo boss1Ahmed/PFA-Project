@@ -38,6 +38,7 @@ class TechnicienMetier
         //if the tasks list is fresh
         $technicians = $manager->getRepository("App:User")->findBy(["typeTech"=>$id_secteur]);
         $count  = 0;
+
         foreach ($technicians as $technician){
             if ($technician->getDateInteTeches()->getValues() == null){
                 $chosenTech = $technician;
@@ -66,6 +67,7 @@ class TechnicienMetier
             //******************************
             //all free technicians are in $taches->getTechniciens
 
+            dump($taches->getValues());
             if ($taches->getValues() != null) {
                 //******************************
                 //if there is an available technician

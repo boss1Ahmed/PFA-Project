@@ -6,9 +6,13 @@ use App\Repository\MachineRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass=MachineRepository::class)
+ * @Vich\Uploadable
  */
 class Machine
 {
@@ -38,6 +42,18 @@ class Machine
      * @ORM\ManyToMany(targetEntity=Defaillance::class, inversedBy="machines")
      */
     private $defaillances;
+
+    /**
+     * @Vich\UploadableField(mapping="documentation",fileNameProperty="documentName")
+     * @var File|null
+     */
+    private $documentFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string|null
+     */
+    private $documentName;
 
     public function __construct()
     {
@@ -127,4 +143,36 @@ class Machine
 
         return $this;
     }
+
+
+    public function getDocumentFile(): ?File
+    {
+        return $this->documentFile;
+    }
+
+    /**
+     *  @param File|UploadedFile|null $documentFile
+     */
+    public function setDocumentFile(?File $documentFile): void
+    {
+        $this->documentFile = $documentFile;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDocumentName(): ?string
+    {
+        return $this->documentName;
+    }
+
+    /**
+     * @param string|null $documentName
+     */
+    public function setDocumentName(?string $documentName): void
+    {
+        $this->documentName = $documentName;
+    }
+
+
 }

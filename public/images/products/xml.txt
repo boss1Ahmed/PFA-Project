@@ -1,0 +1,1 @@
+FILMS/FILM/GENRE[not(text() = following::GENRE)]

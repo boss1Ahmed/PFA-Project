@@ -1,0 +1,21 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block title %}
+    Type defaillance N° {{ type.id }}
+{% endblock %}
+{% block body %}
+    <div class="container py-md-5">
+        <div class="row">
+            <div class="col-3">
+                <h4 class="mb-4">Type N° {{ type.id }}</h4>
+            </div>
+        </div>
+        <div class="col-11">
+            <div class="form-group col-md-6">
+                <label>Nom du type</label>
+                <input type="text" class="form-control" readonly value="{{ type.nom }}">
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}

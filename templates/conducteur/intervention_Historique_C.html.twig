@@ -45,4 +45,26 @@
             $('#myTable').DataTable();
         } );
     </script>
+    <script>
+        const url = new URL('http://localhost:3000/hub');
+        url.searchParams.append('topic', 'http://example.com/ping');
+        //let count = 0;
+        const eventSource = new EventSource(url);
+        eventSource.onmessage = event => {
+            console.log("walo");
+
+            /*
+            $('#counter').text(count+1);
+            count = count+1;
+            var notif = $('#notifToClone').clone(true);
+            //notif.find('#date').text(donnees1.date);
+            notif.find('#date').text((new Date()).toLocaleString())
+            alert((new Date()).toLocaleString());
+            notif.appendTo('#notifs');
+
+             */
+
+
+        }
+    </script>
 {% endblock %}

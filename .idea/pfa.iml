@@ -10,6 +10,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/jwt" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/clock" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/messenger" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/vich/uploader-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jms/metadata" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/string" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-intl-grapheme" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -23,5 +27,12 @@
     <orderEntry type="library" name="slick" level="application" />
     <orderEntry type="library" name="perfect-scrollbar" level="application" />
     <orderEntry type="library" name="bootstrap-progressbar-3.3.4" level="application" />
+    <orderEntry type="library" name="jquery-3.6.0.slim" level="application" />
+    <orderEntry type="library" name="animate" level="application" />
+    <orderEntry type="library" name="hamburgers" level="application" />
+    <orderEntry type="library" name="select2" level="application" />
+    <orderEntry type="library" name="animsition" level="application" />
+    <orderEntry type="library" name="font-face" level="application" />
+    <orderEntry type="library" name="fontawesome-all" level="application" />
   </component>
 </module>

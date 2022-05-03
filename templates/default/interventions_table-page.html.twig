@@ -1,12 +1,15 @@
 {% extends 'admin-dashboard.html.twig' %}
+{% block title %}
+    Liste des Interventions
+{% endblock %}
 {% block css %}
-    <link rel="stylesheet" href="{{asset('css/app.css')  }}" />
+    <link rel="stylesheet" href="{{asset('css/techniqueHistorique.css')  }}" />
 {% endblock %}
 {% block body %}
     <div class="intro-y datatable-wrapper box p-5 mt-5">
-        <table class="table table-report table-report--bordered display datatable w-full" >
+        <table  class="table table-report table-report--bordered display datatable w-full"  id="myTable">
             <thead>
-            <th>Interventions</th>
+            <th>Intervention</th>
             <th>Conducteur</th>
             <th>Machine</th>
             <th>Defaillance</th>
@@ -18,15 +21,19 @@
             </thead>
             <tbody>
 
-            <td>Pane</td>
-            <td>Hassan AZ</td>
-            <td>Machine A</td>
-            <th>vice</th>
-            <th>2022-03-28 16:44:34</th>
-            <th>2022-03-29 16:44:34</th>
+            {% for intervention in interventions%}
+                <tr>
+            <td><a href="{{ path('show_intervention',{'id': intervention.id}) }}">{{ intervention.id }}</a></td>
+            <td>{{ intervention.conducteur.nom }}</td>
+            <td>{{ intervention.machine.nomMachine }}</td>
+            <th>{{ intervention.defaillance.libelle }}</th>
+            <th>{{ intervention.dateLancement|date('d-m-Y à H:i') }}</th>
+            <th>{{ intervention.dateFin|date('d-m-Y à H:i') }}</th>
 
-            <th>Oui</th>
-            <th>Terminée</th>
+            <th>{% if intervention.urgence %}oui {% else %}non{% endif %}</th>
+            <th>{% if intervention.etat == 'TV' %}Terminée{% else %} Encours{% endif %}</th>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>

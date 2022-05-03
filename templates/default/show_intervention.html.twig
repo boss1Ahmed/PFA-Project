@@ -1,0 +1,108 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block title %}
+    Intervention {{ intervention.id }}
+{% endblock %}
+{% block body %}
+    <div class="container py-md-4">
+        <div class="row">
+            <div class="col-3">
+            <h4 class="mb-4 ">Intervention {{ intervention.id }} &nbsp;  </h4>
+            </div>
+            {#<div class="col-1 "><span style="height: 30px; width: 2px"  class="vr"></span></div>
+            <div class="col-2"><button class="btn btn-danger" data-toggle="modal" data-target="#confirm" ><span class="fa fa-trash"></span></button></div>
+       #} </div>
+        <div class="col-11">
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label>Machine &nbsp;<a role="button" href="{{ path('administrer_machine',{'id': intervention.machine.id}) }}"><span class="fa fa-external-link-alt"></span></a>
+                    </label>
+                    <input type="text" class="form-control" readonly value="{{ intervention.machine.nomMachine }}">
+                </div>
+                <div class="col-md-2"></div>
+                <div class="form-group col-md-5">
+                    <label for="">Conducteur &nbsp;<a role="button" href="{{ path('administrer_profile',{'id': intervention.conducteur.id}) }}"><span class="fa fa-external-link-alt"></span></a>
+                    </label>
+                    <input type="text" class="form-control" value="{{ intervention.conducteur.nom }}" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label>Defaillance  &nbsp;<a role="button" href="{{ path('administrer_defaillance',{'id': intervention.defaillance.id}) }}"><span class="fa fa-external-link-alt"></span></a>
+
+                    </label>
+                    <input type="text" class="form-control" readonly value="{{ intervention.defaillance.libelle }}">
+                </div>
+                <div class="col-md-2"></div>
+                <div class="form-group col-md-5">
+                    <label>Type de la défaillance  &nbsp;<a role="button" href="{{ path('administrer_type_defaillance',{'id': intervention.defaillance.typeDefaillance.id}) }}"><span class="fa fa-external-link-alt"></span></a>
+
+                    </label>
+                    <input type="text" class="form-control" readonly value="{{ intervention.defaillance.typeDefaillance.nom }}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label>Date de lancement</label>
+                    <input type="text" class="form-control" readonly value="{{ intervention.dateLancement|date('d-m-Y à H:i') }}">
+                </div>
+                <div class="col-md-2"></div>
+                <div class="form-group col-md-5">
+                    <label>Date de cloture</label>
+                    <input type="text" class="form-control" readonly value="{{ intervention.dateFin|date('d-m-Y à H:i') }}">
+                </div>
+            </div>
+        </div>
+
+        <hr class="mb-4">
+        <h4 class="mb-4">
+            Taches des Techniciens
+        </h4>
+
+            <div class="col-11">
+                {% for tache in intervention.dateInteTeches %}
+                <div class="form-row">
+                    <div class="col-6 col-md-4">
+                        <a href="{{ path('administrer_profile',{'id': tache.technicien.id}) }}">{{ tache.technicien.nom }}</a>
+
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="form-group ">
+                            <label>date debut </label>
+                            <input type="text" class="form-control" readonly value="{{ tache.dateDebut|date('d-m-Y à H:i')  }}">
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="form-group ">
+                            <label>date fin</label>
+                            <input type="text" class="form-control" readonly value="{{tache.dateFin|date('d-m-Y à H:i') }}">
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+    </div>
+
+    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cofirmation</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="confirm_text">Voulez vous vraiment supprimer l'intervention?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="annuler" data-dismiss="modal">Non</button>
+                    <a class="btn btn-primary" role="button" href="{{ path('supprimer_intervention',{'id': intervention.id}) }}">Oui</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}

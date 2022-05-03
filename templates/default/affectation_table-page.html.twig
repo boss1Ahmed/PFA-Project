@@ -1,36 +1,111 @@
 {% extends 'admin-dashboard.html.twig' %}
 {% block css %}
-    <link rel="stylesheet" href="{{ asset('css/techniqueHistorique.css') }}" />
+    <link href="{{ asset('css/theme.css') }}" rel="stylesheet">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+
 {% endblock %}
 {% block body %}
-    <div class="intro-y datatable-wrapper box p-5 mt-5">
-        <table id="myTable" class="table table-report table-report--bordered display datatable w-full" >
-            <thead>
-            <th>Nom</th>
-            <th>Prénom</th>
+    <div class="box container  p-t-30">
+        <div class="row">
+            <div class="col-3">
+                <h4 class="mb-4 ">Intervention à affecter</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="au-task-list js-scrollbar3">
+                    {% for group in list %}
+                    <div id="div" class="au-task__item au-task__item--success js-load-item">
+                        <div class="au-task__item-inner">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h5 class="task">
+                                        <strong style="font-size: larger">{{ group.intervention.machine.nomMachine }} &nbsp;<a role="button" href="{{ path('administrer_machine',{'id': group.intervention.machine.id}) }}"><span class="fa fa-external-link-alt"></span></a></strong>
+                                    </h5>
+                                    <div><h6>{{ group.intervention.defaillance.libelle }} &nbsp;<a role="button" href="{{ path('administrer_defaillance',{'id': group.intervention.defaillance.id}) }}"><span class="fa fa-external-link-alt"></span></a></h6></div>
+                                    <span class="time">{{ group.intervention.dateLancement |date('d-m-Y à H:i') }}</span>
+                                </div>
 
-            <th>Interventions</th>
-
-
-            </thead>
-            <tbody>
-
-            <td>el ahmadi</td>
-            <td>hassan</td>
-
-
-            <td>pane</td>
-
-            </tbody>
-        </table>
+                                <div class="col-sm-4">
+                                    <label class="">Technicien <span class="fa  fa-warning" id="warn1"></span></label>
+                                    <div class="rs-select2 js-select-simple" >
+                                        <select style="width: 75%!important;" id="technicien{{ group.intervention.id }}" name="technicien" class="js-example-tags">
+                                            <option disabled="disabled" >Selectionnez un technicien</option>
+                                            <option selected="selected" id="{{ group.technicien.id }}" data-style="83EC6DFF">{{ group.technicien.nom }}</option>
+                                            {% for technicien in techniciens %}
+                                                {% if technicien.typeTech.id == group.intervention.defaillance.typeDefaillance.id and technicien.id != group.technicien.id  %}
+                                            <option id="{{ technicien.id }}">{{ technicien.nom }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2  ">
+                                    <div class="p-t-25">
+                                        <form>
+                                        <button type="submit" class="btn btn-success" id="{{ group.intervention.id }}" onclick="affecter(this.id)">Affecter</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block js %}
     <!-- BEGIN: JS Assets-->
-    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
     <script>
-        $(document).ready( function () {
-            $('#myTable').DataTable();
-        } );
+        function formatState(data, container)
+        {
+            if (data.element)
+            {
+                $(container).css('background-color', '#'+$(data.element).attr('data-style'));
+            }
+            return data.text;
+        }
+        jQuery(document).ready(function (){
+            $(".js-example-tags").select2({
+
+                width: 'resolve',
+                templateResult: formatState
+            });
+        });
+    </script>
+    <script>
+        function affecter(id){
+            var option = $("#technicien"+ id).find(":selected").text();
+            //alert(id);
+            $.ajax({
+                url: '{{ path('affecter_intervention') }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "intervention": id,
+                    "technicien": option
+                },
+                async: true,
+                success: function (data) {
+                    location.reload();
+                }
+            });
+
+        }
+    </script>
+
+
+    <script>
+        const url1 = new URL('http://localhost:3000/hub');
+        url1.searchParams.append('topic', 'http://example.com/pingAdmin');
+        let count = 0;
+        const eventSource1 = new EventSource(url1);
+        eventSource1.onmessage = event => {
+            location.reload();
+        }
     </script>
 {% endblock %}

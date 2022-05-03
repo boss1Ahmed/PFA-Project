@@ -1,0 +1,78 @@
+{% extends 'admin-dashboard.html.twig' %}
+{% block title %}
+    Machine N° {{ machine.id }}
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{asset('css/techniqueHistorique.css')  }}" />
+{% endblock %}
+
+{% block body %}
+    <div class=" box container py-md-5 row">
+        <div class=" intro-y col-md-4 order-md-0">
+            <div class="row">
+                <div class="">
+                    <h4 class="mb-3">Machine N° {{ machine.id }}</h4>
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="form-group col-md-12">
+                    <label>Nom de la machine</label>
+                    <input type="text" class="form-control" readonly value="{{ machine.nomMachine }}">
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="form-group col-md-12">
+                    <label>Date de l'installation</label>
+                    <input type="text" class="form-control" readonly
+                           value="{{ machine.dateInstall|date('d-m-Y à H:i') }}">
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="col-md-12">
+                    <label class="row-cols-md-8">Documentation</label>
+                    <div class="row-cols">
+                        <a role="button" class="btn btn-info" href="{{ vich_uploader_asset(machine) }}">Télécharger
+                            &nbsp; <span class="fa fa-download"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" intro-y col-md-1 order-md-1 " ><div style="height: 400px" class="vr"></div> </div>
+        <div class="intro-y col-md-7 order-md-2">
+            <div class="row">
+                <div class="">
+                    <h4 class="mb-3">Interventions faites sur la machine</h4>
+                </div>
+            </div>
+            <div class=" datatable-wrapper ">
+            <table class="table table-report table-report--bordered display datatable w-full"  id="myTable">
+                <thead>
+                <tr>
+                    <td>intervention</td>
+                    <td>date debut</td>
+                    <td>date fin</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for intervention in machine.interventions %}
+                    <tr>
+                        <td><a href="{{ path('show_intervention',{'id':intervention.id}) }}">{{ intervention.id }}</a></td>
+                        <td>{{ intervention.dateLancement|date('d-m-Y à H:i') }}</td>
+                        <td>{{ intervention.dateFin|date('d-m-Y à H:i') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+
+{% endblock %}

@@ -48,7 +48,7 @@ class Intervention
     private $conducteur;
 
     /**
-     * @ORM\OneToMany(targetEntity=DateInteTech::class, mappedBy="intervention")
+     * @ORM\OneToMany(targetEntity=DateInteTech::class, mappedBy="intervention" , cascade={"remove"})
      */
     private $dateInteTeches;
 
@@ -57,10 +57,7 @@ class Intervention
      */
     private $defaillance;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=PieceRechange::class, inversedBy="interventions")
-     */
-    private $piecesRechange;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=Machine::class, inversedBy="interventions")
@@ -186,30 +183,6 @@ class Intervention
     public function setDefaillance(?Defaillance $defaillance): self
     {
         $this->defaillance = $defaillance;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, PieceRechange>
-     */
-    public function getPiecesRechange(): Collection
-    {
-        return $this->piecesRechange;
-    }
-
-    public function addPiecesRechange(PieceRechange $piecesRechange): self
-    {
-        if (!$this->piecesRechange->contains($piecesRechange)) {
-            $this->piecesRechange[] = $piecesRechange;
-        }
-
-        return $this;
-    }
-
-    public function removePiecesRechange(PieceRechange $piecesRechange): self
-    {
-        $this->piecesRechange->removeElement($piecesRechange);
 
         return $this;
     }
