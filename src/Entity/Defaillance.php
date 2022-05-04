@@ -44,11 +44,17 @@ class Defaillance
      */
     private $piecesRechange;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Zone::class, mappedBy="defaillances")
+     */
+    private $zones;
+
     public function __construct()
     {
         $this->machines = new ArrayCollection();
         $this->interventions = new ArrayCollection();
         $this->piecesRechange = new ArrayCollection();
+        $this->zones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,6 +163,33 @@ class Defaillance
     public function removePiecesRechange(PieceRechange $piecesRechange): self
     {
         $this->piecesRechange->removeElement($piecesRechange);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Zone>
+     */
+    public function getZones(): Collection
+    {
+        return $this->zones;
+    }
+
+    public function addZone(Zone $zone): self
+    {
+        if (!$this->zones->contains($zone)) {
+            $this->zones[] = $zone;
+            $zone->addDefaillance($this);
+        }
+
+        return $this;
+    }
+
+    public function removeZone(Zone $zone): self
+    {
+        if ($this->zones->removeElement($zone)) {
+            $zone->removeDefaillance($this);
+        }
 
         return $this;
     }

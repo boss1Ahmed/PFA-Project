@@ -55,10 +55,16 @@ class Machine
      */
     private $documentName;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Zone::class, mappedBy="machine")
+     */
+    private $zones;
+
     public function __construct()
     {
         $this->interventions = new ArrayCollection();
         $this->defaillances = new ArrayCollection();
+        $this->zones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -172,6 +178,36 @@ class Machine
     public function setDocumentName(?string $documentName): void
     {
         $this->documentName = $documentName;
+    }
+
+    /**
+     * @return Collection<int, Zone>
+     */
+    public function getZones(): Collection
+    {
+        return $this->zones;
+    }
+
+    public function addZone(Zone $zone): self
+    {
+        if (!$this->zones->contains($zone)) {
+            $this->zones[] = $zone;
+            $zone->setMachine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeZone(Zone $zone): self
+    {
+        if ($this->zones->removeElement($zone)) {
+            // set the owning side to null (unless already changed)
+            if ($zone->getMachine() === $this) {
+                $zone->setMachine(null);
+            }
+        }
+
+        return $this;
     }
 
 

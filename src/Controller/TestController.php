@@ -21,7 +21,7 @@ class TestController extends AbstractController
      */
     public function index(Request $request,UploaderHelper $helper): Response
     {
-
+/*
         $machine = $this->getDoctrine()->getManager()->getRepository('App:Machine')->find(3);
         $form = $this->createForm('App\Form\MachineType',$machine);
         $form->handleRequest($request);
@@ -30,13 +30,18 @@ class TestController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
         }
 
-        $path= $helper->asset($machine);
+        $path= $helper->asset($machine);*/
+        $form = $this->createForm('App\Form\UserType',$this->getUser());
+        $form->handleRequest($request);
+        if ($form->isSubmitted()){
+            $this->getDoctrine()->getManager()->persist($this->getUser());
+            $this->getDoctrine()->getManager()->flush();
+        }
 
         return $this->render('test/index.html.twig', [
             'controller_name' => 'TestController',
             'form'=>$form->createView(),
-            'machine'=>$machine,
-            'path'=>$path
+
 
         ]);
     }

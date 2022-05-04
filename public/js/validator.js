@@ -31,14 +31,14 @@ function validatemachine(){
     const $warn = $("#warn");
 
     if(checkString($machineval) ){
-        $warn.removeClass(" fa-warning");
+        $warn.removeClass(" fa-exclamation-triangle");
         $warn.addClass("fa-check");
         $bol1 = true;
         buttonvalidator();
     }else{
         $warn.removeClass(" fa-check");
-        $warn.addClass("fa-warning");
-        $warn.setAttribute("class","fa fa-warning")
+        $warn.addClass("fa-exclamation-triangle");
+        $warn.setAttribute("class","fa fa-exclamation-triangle")
         $bol1 = false;
         buttonvalidator();
     }
@@ -50,13 +50,13 @@ function validatedef(){
     const $warn1 = $("#warn1");
 
     if (checkString($deffaillanceval)){
-        $warn1.removeClass("fa-warning");
+        $warn1.removeClass("fa-exclamation-triangle");
         $warn1.addClass("fa-check");
         $bol2 = true;
         buttonvalidator();
     }else{
         $warn1.removeClass("fa-check");
-        $warn1.addClass("fa-warning");
+        $warn1.addClass("fa-exclamation-triangle");
         $bol2 = false;
         buttonvalidator();
     }
@@ -68,13 +68,13 @@ function validatesecteur(){
     const $warn2 = $("#warn2");
 
     if (checkString($secteurval)){
-        $warn2.removeClass("fa-warning");
+        $warn2.removeClass("fa-exclamation-triangle");
         $warn2.addClass("fa-check");
         $bol3 = true;
         buttonvalidator();
     }else{
         $warn2.removeClass("fa-check");
-        $warn2.addClass("fa-warning");
+        $warn2.addClass("fa-exclamation-triangle");
         $bol3 = false;
         buttonvalidator();
     }
@@ -84,7 +84,16 @@ function validatesecteur(){
 jQuery("input[name='urgence']").on("change",validateurgence)
 function validateurgence(){
     const $warn3 = $("#warn3");
-    $warn3.removeClass("fa-warning");
+    $warn3.removeClass("fa-exclamation-triangle");
+    $warn3.addClass("fa-check");
+    if ($('input[name="urgence"]:checked').val() == 'oui'){
+        $('#dateLimite').removeAttr("hidden");
+
+    }else{
+        $('#dateLimite').attr("hidden","hidden");
+    }
+
+
     $bol4 = true;
     buttonvalidator();
 }

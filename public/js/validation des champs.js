@@ -116,7 +116,7 @@
         }else{
             test();
         }
-        window.setTimeout( submitTest, 500 );
+        window.setTimeout( submitTest, 300 );
 
     }
     function test(){

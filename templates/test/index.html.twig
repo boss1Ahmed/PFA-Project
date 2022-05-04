@@ -18,14 +18,14 @@
     </ul>
 </div>
 <div class="example-wrapper">
-
-    {{ form_start(form)}}
-        <input type="submit">submit</input>
+{{ form_start(form) }}
+    {{ form_row(form.imageFile) }}
+    <input type="submit" value="submit">
     {{ form_end(form) }}
 </div>
 <div class="example-wrapper">
 
-    <button><a href="{{ vich_uploader_asset(machine) }}" ></a>download</button>
+
 
 
 </div>

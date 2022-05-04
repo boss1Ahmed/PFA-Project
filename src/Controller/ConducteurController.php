@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Defaillance;
 use App\Entity\Machine;
 use App\Entity\TypeDefaillance;
+use App\Entity\User;
 use App\Metier\InterventionMetier;
 
 use App\Metier\TechnicienMetier;
+use DateTime;
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,28 +69,34 @@ class ConducteurController extends AbstractController
      */
     public function profileAction(Request $request): Response
     {
-        if($request->getMethod()=='POST' ){
+        $new = new User();
+        $form = $this->createForm('App\Form\UserType',$this->getUser());
+        $form->handleRequest($request);
+        if($request->getMethod()=='POST' && $form->isSubmitted() && $form->isValid()){
             $firstname=$request->get('nom');
             $lastname=$request->get('prenom');
             $mail=$request->get('mail');
             $addresse=$request->get('addresse');
             $tel=$request->get('tel');
             $birthday=$request->get('birthday');
+            $date = date('Y-m-d',strtotime($birthday));
+            $test = DateTime::createFromFormat('Y-m-d', $date);
             $user=$this->getUser();
             $user->setNom($firstname);
             $user->setPrenom($lastname);
             $user->setEmail($mail);
             $user->setTele($tel);
             $user->setAddresse($addresse);
-           // $user->setDateDeNaissance($birthday);
+            $user->setDateDeNaissance($test);
             $em=$this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
+            $em->persist($user);
+            $em->flush();
 
         }
 
         return $this->render('edit-profile/edit_profile-page.html.twig', [
-            "base"=>"conducteur"
+            "base"=>"conducteur",
+            "form"=>$form->createView()
         ]);
     }
 
@@ -106,7 +114,7 @@ class ConducteurController extends AbstractController
         //Creer l'intervention
         //cet attribut $request->get('machine_name') est utilisée pour differentié
         //entre la creation de l'intervention est la recherche des defaillances
-        if ($request->getMethod() == 'POST' && !$request->get('machine_name')) {
+        if ($request->getMethod() == 'POST' && !$request->get('machine_name') && !$request->get('zone_name')) {
             $nom_secteur = $request->get('secteur');
             $secteur = $em->getRepository("App:TypeDefaillance")->findOneBy(["nom"=>$nom_secteur]);
 
@@ -118,21 +126,41 @@ class ConducteurController extends AbstractController
 
         }
 
-        //Afficher les defaillances pour chaque machine slectionné
+        //Afficher les zones pour chaque machine selectionnée
         if ($request->getMethod() == 'POST' && $request->get('machine_name') ){
             $machinN = $em->getRepository(Machine::class)->findOneBy(['nom_machine'=>$request->get('machine_name')]);
-            $defsN = $machinN->getDefaillances();
-            $noms = array();
-            for ($i=0; $i<count($defsN); $i++){
-                $noms[$i]= $defsN[$i]->getLibelle();
+
+            $zones = $machinN->getZones();
+            $noms_zone = array();
+
+            for ($i=0; $i<count($zones); $i++){
+                $noms_zone[$i]= $zones[$i]->getLibelle();
             }
 
             $arrData = [
-                'noms'=>$noms,
-                'nbr'=>count($defsN)
+
+                'nomszones'=>$noms_zone,
+                'nbrzones'=>count($zones),
+
             ];
 
             return new JsonResponse($arrData);
+        }
+        //afficher les defaillances pour chaque zone selectionnée
+        if ($request->getMethod() == 'POST' && $request->get('zone_name')){
+            $zone = $em->getRepository('App:Zone')->findOneBy(['libelle'=> $request->get('zone_name')]);
+            $defs = $zone->getDefaillances();
+            $noms = array();
+            for ($i=0; $i<count($defs); $i++){
+                $noms[$i]= $defs[$i]->getLibelle();
+            }
+            $arrData = [
+                'noms'=>$noms,
+                'nbr'=>count($defs)
+            ];
+
+            return new JsonResponse($arrData);
+
         }
 
         return $this->render('interventions/creer_intervention.html.twig',[

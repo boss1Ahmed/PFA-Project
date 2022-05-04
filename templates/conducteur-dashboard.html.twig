@@ -39,7 +39,7 @@
         <!-- Sidebar - Brand -->
 
 
-        <div class="sidebar-brand d-flex align-items-center justify-content-center mx-3">Menu </div>
+        <div class="sidebar-brand d-flex align-items-center justify-content-center mx-2">Plateforme Conducteur </div>
 
 
         <!-- Divider -->
@@ -199,7 +199,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ app.user.nom }}</span>
                             <img class="img-profile rounded-circle"
-                                 src="{{ asset('/img/undraw_profile.svg') }}">
+                                 src="{{ vich_uploader_asset(app.user) }}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

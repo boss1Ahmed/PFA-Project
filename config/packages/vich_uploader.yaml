@@ -5,3 +5,6 @@ vich_uploader:
         documentation:
             uri_prefix: /images/products
             upload_destination: '%kernel.project_dir%/public/images/products'
+        photos:
+            uri_prefix: /images/photos
+            upload_destination: '%kernel.project_dir%/public/images/photos'
