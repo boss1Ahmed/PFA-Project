@@ -34,7 +34,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <div class="sidebar-brand d-flex align-items-center justify-content-center mx-3">Menu </div>
+        <div class="sidebar-brand d-flex align-items-center justify-content-center mx-2" style="font-size: small" >Plateforme Technicien </div>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -74,8 +74,8 @@
         <li class="nav-item active">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTables" aria-expanded="false"
                aria-controls="collapseTables">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Tables</span>
+                <i class="fas fa-fw fa-table"></i>
+                <span>Tableaux</span>
             </a>
             <div id="collapseTables" class="collapse " aria-labelledby="headingPages"
                  data-parent="#accordionSidebar">
@@ -121,13 +121,18 @@
 
 
                     {% set count = 0 %}
+                    {% for tache in app.user.dateInteTeches %}
+                        {% if tache.notified == 0 %}
+                        {% set count = count + 1 %}
+                        {% endif %}
+                    {% endfor %}
                     <!-- Nav Item - Alerts -->
                     <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
                             <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter" id="counter"></span>
+                            <span class="badge badge-danger badge-counter" id="counter">{{ count }}</span>
                         </a>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -136,7 +141,27 @@
                                 Notifications d'interventions
                             </h6>
 
-                            <div id="notifs"> </div>
+                            <div id="notifs">
+                                {% for notif in app.user.dateInteTeches %}
+                                    {% if notif.notified == 0 %}
+                                        <div >
+                                            <a class="dropdown-item d-flex align-items-center"  href="{{ path('dashboard_tehcnicien',{'id':notif.id}) }}" >
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-warning">
+                                                        <i class="fas fa-exclamation-triangle text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+
+                                                    <div class="small text-gray-500" id="date">{{ notif.intervention.dateLancement|date('d-m-Y à H:i')  }}</div>
+                                                    Vous avez une nouvelle tache à faire!
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                             <div  hidden="hidden" >
                             <a class="dropdown-item d-flex align-items-center" href="{{ path('dashboard_tehcnicien') }}" id="notifToClone" hidden="hidden">
                                 <div class="mr-3">
@@ -150,7 +175,8 @@
                                 </div>
                             </a>
                             </div>
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+
+                            <a class="dropdown-item text-center small text-gray-500" href="{{ path('dashboard_tehcnicien',{'id':1}) }}">Marquer tous comme lu</a>
                         </div>
                     </li>
 
@@ -206,12 +232,12 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ app.user.nom }}</span>
                             <img class="img-profile rounded-circle"
-                                 src="{{ asset('/img/undraw_profile.svg') }}">
+                                 src="{{ vich_uploader_asset(app.user) }}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="{{ asset('') }}">
+                            <a class="dropdown-item" href="{{ path('fos_user_change_password') }}">
                                 <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Change password
                             </a>
@@ -234,7 +260,7 @@
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-            <div class="container-fluid">
+            <div class="container-fluid ">
 
                 <!-- Page Heading -->
 
@@ -306,14 +332,19 @@
     eventSource1.onmessage = event => {
         donnees1 = JSON.parse(event.data);
         console.log(donnees1.date);
+        if (donnees1.id_tech ==={{ app.user.id }}) {
+            $('#counter').text(count + 1);
+            count = count + 1;
+            var notif = $('#notifToClone').clone(true);
+            //notif.find('#date').text(donnees1.date);
+            notif.find('#date').text((new Date()).toLocaleString())
+            notif.prop("id",donnees1.id_tache);
+            notif.prop("href","{{ path('dashboard_tehcnicien') }}/"+ donnees1.id_tache)
+            //alert((new Date()).toLocaleString());
 
-        $('#counter').text(count+1);
-        count = count+1;
-        var notif = $('#notifToClone').clone(true);
-        //notif.find('#date').text(donnees1.date);
-        notif.find('#date').text((new Date()).toLocaleString())
-        //alert((new Date()).toLocaleString());
-        notif.appendTo('#notifs');
+            notif.appendTo('#notifs');
+        }
+
     }
 </script>
 {% block js %}

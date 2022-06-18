@@ -1,4 +1,9 @@
-{% extends 'conducteur-dashboard.html.twig' %}
+{% extends  app.user.poste == 'C'
+    ? 'conducteur-dashboard.html.twig'
+    : app.user.poste == 'T'
+    ? 'techenicien-dashboard.html.twig'
+    : 'admin-dashboard.html.twig'
+%}
 {% block css %}
     <link href="{{ asset('css/edit_profile-page.css') }}">
 {% endblock %}
@@ -12,7 +17,7 @@
                     <div class="card-header">photo de profile</div>
                     <div class="card-body text-center">
                         <!-- Profile picture image-->
-                        <img class="img-account-profile rounded-circle mb-3" src="{{ vich_uploader_asset(app.user) }}" style="height : 240px;">
+                        <img class="img-account-profile rounded-circle mb-3" src="{{ vich_uploader_asset(app.user) }}" style="height : 240px; width: 240px">
                         <!-- Profile picture help block-->
 
                         <!-- Profile picture upload button-->

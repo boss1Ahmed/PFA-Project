@@ -67,9 +67,9 @@
 
                                 <div class="col-6">
 
-                                    <label class="label">Zone <span class="fa fa-exclamation-triangle" ></span></label>
+                                    <label class="label">Zone <span class="fa fa-exclamation-triangle" id="warnzone"></span></label>
                                     <div class="rs-select2 js-select-simple" >
-                                        <select id="zone" name="zone" class="js-example-tags" onchange="choice2(this)">
+                                        <select id="zone" name="zone" class="zoneSel" onchange="choice2(this)">
                                         <option selected disabled >Selectionnez la zone</option></select>
                                     </div>
                                 </div>
@@ -156,6 +156,14 @@
             });
         });
     </script>
+    <script> jQuery(document).ready(function (){
+            $(".zoneSel").select2({
+
+                width: 'resolve'
+            });
+        });
+    </script>
+
     <script>
         function choice1(select) {
             machine_name = select.options[select.selectedIndex].text;

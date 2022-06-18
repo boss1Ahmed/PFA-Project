@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 
 /**
  * Class ConducteurController
@@ -28,15 +29,35 @@ use Symfony\Component\Routing\Annotation\Route;
 class ConducteurController extends AbstractController
 {
     /**
-     * @Route("/", name="conducteur_dashboard")
+     * @Route("/dash/{id}", name="conducteur_dashboard")
      */
-    public function dashboardAction(): Response
+    public function dashboardAction(int $id=0,Request $request): Response
     {
+        $em = $this->getDoctrine()->getManager();
         $criteria = new Criteria();
         $criteria->where(Criteria::expr()->neq('etat', "TV"));
+        $criteria->andWhere(Criteria::expr()->eq('conducteur',$this->getUser()));
         $interventions = $this->getDoctrine()->getRepository("App:Intervention")->matching($criteria);
+
+        if ($id > 1){
+            $interventionNotified = $em->getRepository('App:Intervention')->findOneBy(['id'=>$id]);
+
+            $interventionNotified->setNotified(true);
+            $em->persist($interventionNotified);
+            $em->flush();
+        }
+        if ($id == 1 ){
+            foreach ($interventions as $intervention){
+                if ($intervention->getEtat() == "T"){
+                    $intervention->setNotified(true);
+                    $em->persist($intervention);
+                    $em->flush();
+                }
+            }
+        }
         return $this->render('interventions/intervention_conducteur.html.twig',[
-            "interventions"=>$interventions
+            "interventions"=>$interventions,
+            "notifiedIntervention"=>$id
         ]);
     }
 
@@ -47,7 +68,8 @@ class ConducteurController extends AbstractController
         $em=$this->getDoctrine()->getManager();
        $id = $request->get("key");
        $intervention = $em->getRepository("App:Intervention")->findOneBy(["id"=>$id]);
-       $intervention->setEtat("TV");
+       $intervention->setEtat("TV")
+           ->setDateFin( date_create('now'));
        $em->persist($intervention);
        $em->flush();
 
@@ -59,7 +81,7 @@ class ConducteurController extends AbstractController
      * @Route ("/historique",name="historique_intervention_conducteur")
      */
     public function interventionListeAction(){
-        $interventions = $this->getDoctrine()->getRepository("App:Intervention")->findAll();
+        $interventions = $this->getDoctrine()->getRepository("App:Intervention")->findBy(["conducteur"=>$this->getUser()]);
         return $this->render('conducteur/intervention_Historique_C.html.twig',[
             "interventions"=>$interventions
         ]);
@@ -69,7 +91,12 @@ class ConducteurController extends AbstractController
      */
     public function profileAction(Request $request): Response
     {
-        $new = new User();
+        $criteria = new Criteria();
+        $criteria->where(Criteria::expr()->neq('etat', "TV"));
+        $criteria->andWhere(Criteria::expr()->eq('conducteur',$this->getUser()));
+        $interventions = $this->getDoctrine()->getRepository("App:Intervention")->matching($criteria);
+
+
         $form = $this->createForm('App\Form\UserType',$this->getUser());
         $form->handleRequest($request);
         if($request->getMethod()=='POST' && $form->isSubmitted() && $form->isValid()){
@@ -96,7 +123,8 @@ class ConducteurController extends AbstractController
 
         return $this->render('edit-profile/edit_profile-page.html.twig', [
             "base"=>"conducteur",
-            "form"=>$form->createView()
+            "form"=>$form->createView(),
+            "interventions"=>$interventions
         ]);
     }
 
@@ -106,13 +134,18 @@ class ConducteurController extends AbstractController
      */
     public function createInterventionAction(Request $request , HubInterface $hub)
     {
+        $criteria = new Criteria();
+        $criteria->where(Criteria::expr()->neq('etat', "TV"));
+        $criteria->andWhere(Criteria::expr()->eq('conducteur',$this->getUser()));
+        $interventions = $this->getDoctrine()->getRepository("App:Intervention")->matching($criteria);
+
         $em = $this->getDoctrine()->getManager();
         $machines = $em->getRepository(Machine::class)->findAll();
         $defaillances = $em->getRepository(Defaillance::class)->findAll();
         $secteurs = $em->getRepository(TypeDefaillance::class)->findAll();
 
         //Creer l'intervention
-        //cet attribut $request->get('machine_name') est utilisée pour differentié
+        //cet attribut $request->get('machine_name') est utilisée pour differencié
         //entre la creation de l'intervention est la recherche des defaillances
         if ($request->getMethod() == 'POST' && !$request->get('machine_name') && !$request->get('zone_name')) {
             $nom_secteur = $request->get('secteur');
@@ -167,6 +200,7 @@ class ConducteurController extends AbstractController
             'machines'=>$machines,
             'defaillances'=>$defaillances,
             'secteurs'=>$secteurs,
+            "interventions"=>$interventions
         ]);
     }
 

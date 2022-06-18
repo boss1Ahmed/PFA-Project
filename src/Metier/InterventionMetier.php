@@ -82,13 +82,14 @@ class InterventionMetier
         */
     }
 
-    public function informTechnicians(Intervention $intervention,int $id_tech,HubInterface $hub){
+    public function informTechnicians(Intervention $intervention,int $id_tech,HubInterface $hub, int $id){
         $donnees = [
             'id'=>$intervention->getId(),
             'date'=>$intervention->getDateLancement()->format('d-m-Y à H:i'),
             'nom'=>$intervention->getMachine()->getNomMachine(),
             'def'=>$intervention->getDefaillance()->getLibelle(),
-            'id_tech'=>$id_tech
+            'id_tech'=>$id_tech,
+            'id_tache'=>$id
         ];
         $update = new Update("http://example.com/ping1",json_encode($donnees),false);
         $hub->publish($update);
@@ -97,10 +98,12 @@ class InterventionMetier
     public function affecter(User $tech,Intervention $intervention,EntityManager $em){
         $tache = new DateInteTech();
         $tache->setIntervention($intervention)
-            ->setTechnicien($tech);
+            ->setTechnicien($tech)
+            ->setNotified(false);
         $em->persist($tache);
 
         $em->flush();
+        return $tache->getId();
     }
 
     public function informAdmin(HubInterface $hub){

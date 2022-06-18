@@ -1,0 +1,105 @@
+{% extends 'admin-dashboard.html.twig' %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+{% block body %}
+<div class="container-fluid">
+
+<h1 class="h3 mb-2 text-gray-800">Charts</h1>
+
+
+<!-- Content Row -->
+<div class="row">
+
+    <div class="col-xl-12
+     col-lg-7">
+
+        <!-- Area Chart -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                <select  id="machinelistes" name="machinelistes" class="form-select" aria-label="Default select example"onchange="selectoption()">
+                        <option >Toutes les machines</option>
+                        {% for machine in machines%}
+                        <option >{{ machine.nomMachine }}</option>
+
+
+                            {% endfor %}
+                            </select>
+                            </h6>
+            </div>
+            <div class="card-body">
+                <div >
+      <canvas id="line-chart" width="800" height="450"></canvas>
+
+                </div>
+                <hr>
+
+            </div>
+        </div>
+
+<!-- /.container-fluid -->
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+
+    var nbr = {{ nbrinter|json_encode|raw}}
+    var machine = {{ nommachines|json_encode|raw}}
+    var colors2 = ['orange', 'blue','red','green','yellow','purple']
+
+
+   function selectoption(){
+
+       const x = document.getElementById('machinelistes').selectedIndex;
+       var y = document.getElementById("machinelistes").options;
+       var index=y[x].index
+       console.log(index);
+       if(index===0){
+
+           let mychartgragh=new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                 labels: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre"],
+
+                 datasets: nbr.map((ds, i) => ({
+                  label:  machine[i],
+                    borderColor: colors2[i],
+                    fill: false,
+                        data: nbr[i]
+      })) },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Statistique des machines pour 2022'
+                }
+            }
+        });
+       }
+           else{
+
+               let mychartgragh=new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                 labels: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre"],
+
+                 datasets:[{
+                      data: nbr[index-1],
+                      label:  machine[index-1],
+                     borderColor: colors2[index-1],
+                     fill: false
+                 }] },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Statistique des interventions pour la machine '+machine[index-1]
+                }
+            }
+           });
+           }
+}
+    </script>
+{% endblock %}

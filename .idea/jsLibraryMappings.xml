@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{animate, animsition, app, bootstrap, bootstrap-progressbar-3.3.4, font-awesome, font-face, fontawesome-all, hamburgers, jquery, jquery-3.6.0.slim, jquery.dataTables, material-design-iconic-font, perfect-scrollbar, select2, slick, theme}" />
+    <file url="PROJECT" libraries="{Chart.js, animate, animsition, app, bootstrap, bootstrap-progressbar-3.3.4, font-awesome, font-face, fontawesome-all, hamburgers, jquery, jquery-3.6.0.slim, jquery-scrollTo, jquery.dataTables, material-design-iconic-font, perfect-scrollbar, select2, slick, theme}" />
   </component>
 </project>

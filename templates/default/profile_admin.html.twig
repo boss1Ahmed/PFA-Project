@@ -9,8 +9,11 @@
     N° {{ user.id }}
 {% endblock %}
 {% block body %}
-    <div class="container  intro-y">
+    <div class="container  intro-y box" >
+        {{ form_start(form) }}
+        <form method="post">
     <div class="row py-md-3">
+
         <div class="col-xl-4">
             <div class="py-md-0">
             <!-- Profile picture card-->
@@ -18,11 +21,11 @@
                 <div class="card-header">Profile Picture</div>
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-3" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                    <img class="img-account-profile rounded-circle mb-3 ml-4" src="{{ vich_uploader_asset(user) }}" style="width: 240px; height: 224px;" >
                     <!-- Profile picture help block-->
 
                     <!-- Profile picture upload button-->
-                    <button class="btn btn-primary" type="button">Télécharger une image</button>
+                    {{ form_row(form.imageFile) }}
                 </div>
             </div>
             </div>
@@ -32,50 +35,56 @@
             <div class="card mb-4">
                 <div class="card-header"> Details du compte</div>
                 <div class="card-body">
-                    <form>
-                        <!-- Form Group (username)-->
-
-                        <!-- Form Row-->
-                        <div class="row gx-3 mb-3">
-                            <!-- Form Group (first name)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputFirstName">Prénom</label>
-                                <input class="form-control" id="inputFirstName" type="text" value="{{ user.nom }}">
-                            </div>
-                            <!-- Form Group (last name)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputLastName">Nom</label>
-                                <input class="form-control" id="inputLastName" type="text" value="{{ user.username }}">
-                            </div>
+                    <div class="row gx-3 mb-3">
+                        <!-- Form Group (first name)-->
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="inputFirstName" >Prénom</label>
+                            <input class="form-control" id="inputFirstName" type="text" placeholder="Enter votre prénom" value="{{ user.prenom}}" name="prenom">
+                            <span id="result_prenom"></span>
                         </div>
+                        <!-- Form Group (last name)-->
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="inputLastName">Nom</label>
+                            <input class="form-control" id="inputLastName" type="text" placeholder="Enter votre nom" value="{{ user.nom}}" name="nom">
+                            <span id="result_nom"></span>
+                        </div>
+                    </div>
                         <!-- Form Row        -->
 
                         <!-- Form Group (email address)-->
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputEmailAddress">Email</label>
-                            <input class="form-control" id="inputEmailAddress" type="email"  value="{{ user.email }}">
+                            <div class="">
+                                <label class="small mb-1" for="inputEmailAddress">Email</label>
+                                <input class="form-control" name="mail" id="inputEmailAddress" type="email" placeholder="Entrer votre addresse mail " value="{{ user.email }}" >
+                                <span id="result_mail"></span>
+                            </div>
                         </div>
                         <!-- Form Row-->
                         {% if user.poste == 'T' %}
                         <div class="mb-3">
                             <label class="small mb-1" for="secteur">Secteur</label>
-                            <input class="form-control" id="secteur" type="text"  value="{{ user.typeTech.nom }}">
+                            <input class="form-control" disabled id="secteur" type="text"  value="{{ user.typeTech.nom }}">
                         </div>
                         {% endif %}
                         <!-- Save changes button-->
                         <div class="row  mb-3">
                             <div class="col-md-2">
-                                <button class="btn btn-primary" type="button">Enregistrer</button>
+                                <button class="btn btn-primary" type="submit">Enregistrer</button>
+                                {{ form_end(form) }}
                             </div>
                             <div class="col-md-2">
                                 <button class="btn btn-secondary" type="button">Annuler</button>
                             </div>
                         </div>
-                    </form>
+
                 </div>
             </div>
         </div>
+
     </div>
+        </form>
+
+
     <div class="row mr-2"><hr></div>
     <div class="row intro-y py-md-2">
         <div class="row">

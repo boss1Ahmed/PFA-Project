@@ -47,6 +47,11 @@ class DateInteTech
      */
     private $pieces;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $notified;
+
     public function __construct()
     {
         $this->pieces = new ArrayCollection();
@@ -131,6 +136,18 @@ class DateInteTech
                 $piece->setTache(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNotified(): ?bool
+    {
+        return $this->notified;
+    }
+
+    public function setNotified(?bool $notified): self
+    {
+        $this->notified = $notified;
 
         return $this;
     }

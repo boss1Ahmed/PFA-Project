@@ -27,19 +27,22 @@
     <link href="https://colorlib.com/polygon/cooladmin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
 
 
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/chosen.css') }}">
+
+
 {% endblock %}
 
 
 
 {% block body %}
 
-    <div class="row">
+    <div class="row m-t-20">
         <div class="col-lg-12">
             <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
                 <div class="au-card-title" style="background-color: blue ;padding-bottom: 30px;padding-top: 30px;">
                     <div class="bg-overlay bg-overlay--blue"></div>
                     <h3>
-                        <i class="zmdi zmdi-account-calendar"></i>26 April, 2018</h3>
+                        <i class="zmdi zmdi-calendar"></i>{{ date('now')|date('d F, Y ') }}</h3>
 
 
                 </div>
@@ -67,27 +70,23 @@
 
                     {% for tache in taches %}
                         {% if tache.dateDebut != null %}
-                        <div class="au-task__item au-task__item--danger" id="div{{ tache.intervention.id }}">
+                        <div class="au-task__item au-task__item--{% if ( notifiedTask == tache.id )  %}danger{% else %}warning{% endif %}" id="div{{ tache.intervention.id }}">
                             <div class="au-task__item-inner">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <h5 class="task">
                                             <a data-toggle="modal"  data-target="#infos{{ tache.intervention.id }}" >
-                                            <strong style="font-size: larger">{{ tache.intervention.machine.nomMachine }}</strong>
+                                            <strong style="font-size: larger">{{ tache.intervention.machine.nomMachine }} </strong>
                                             </a>
                                         </h5>
                                         <div>  <h6 >{{ tache.intervention.defaillance.libelle }}</h6></div>
                                         <span class="time">{{ tache.intervention.dateLancement |date('d-m-Y à H:i') }}</span>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <button class="btn btn-info" id="" onclick="ajouter(this.id)" data-toggle="modal" data-target="#add">Ajouter</button>
-                                        <div class="rs-select2 js-select-simple">
-                                            <select style="width: 50%!important;" class="js-example-tags">
-                                                <option disabled="disabled">Selectionnez une piece</option>
-                                                <option>piece 1</option>
-                                                <option>piece 2</option>
-                                            </select>
-                                        </div>
+                                    {#<div class="col-sm-4 pl-5">
+                                        <button class="btn btn-info" id="{{ tache.id }}" onclick="ajouter(this.id)" data-toggle="modal" data-target="#add">Ajouter</button>
+                                    </div>#}
+                                    <div class="col-sm-4 pl-5">
+                                        <a role="button" class="btn btn-info" href="{{ path('tache_information',{'id':tache.id}) }}">Plus d'information</a>
                                     </div>
                                     <div class="col-sm-2  pl-2">
                                         <button onclick="select(this.id)" class="btn btn-danger pl-4 pr-4" data-toggle="modal"
@@ -103,13 +102,13 @@
                     <div id="debutDiv">
                     {% for tache in taches %}
                         {% if tache.dateDebut == null %}
-                        <div class="au-task__item au-task__item--primary" id="div{{ tache.intervention.id }}">
+                        <div class="au-task__item au-task__item--{% if ( notifiedTask == tache.id )  %}danger{% else %}success{% endif %}" id="div{{ tache.intervention.id }}">
                             <div class="au-task__item-inner">
                                 <div class="row">
                                     <div class="col-sm-10">
                                         <h5 class="task">
                                             <a data-toggle="modal"  data-target="#infos" >
-                                            <strong style="font-size: larger">{{ tache.intervention.machine.nomMachine }}</strong>
+                                            <strong style="font-size: larger">{{ tache.intervention.machine.nomMachine }} </strong>
                                             </a>
                                         </h5>
                                         <div>  <h6 >{{ tache.intervention.defaillance.libelle }}</h6></div>
@@ -204,30 +203,46 @@
                     </button>
                 </div>
                 <div class="modal-body" id="confirm_text">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="form-group">
-                                <label>la Pièce:</label>
-                            <div class="rs-select2 js-select-simple">
-                                <select style="width: 50%!important;" class="js-example-tags">
-                                    <option disabled="disabled">Selectionnez une piece</option>
-                                    <option>piece 1</option>
-                                    <option>piece 2</option>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <div class="">
+                                <label for="inputPiece">Piece :</label>
+
+                                <select  id="inputPiece" class="form-control">
+                                    <option selected disabled>Selectionnez une piece</option>
+                                    {% for piece in pieces %}
+                                        <option>{{ piece.libelle }}</option>
+                                    {% endfor %}
                                 </select>
-                            </div>
+
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
+
+
+                        <div class="form-group col">
+                            <div class="">
                                 <label>quantité</label>
-                                <input type="text" class="form-control">
+                                <input required type="text" id="quantite" class="form-control">
                             </div>
                         </div>
+                        <div class="form-group col ">
+                            <button type="submit" class="btn btn-secondary m-t-30" onclick="addpiecetable()">ajouter</button>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <table id="pieceTable" class="table table-bordered">
+                            <tr>
+                                <td>piece</td>
+                                <td>quantité</td>
+                            </tr>
+
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" id="annuler" data-dismiss="modal">Non</button>
-                    <button class="btn btn-primary" onclick="confirm()">Oui</button>
+                    <button class="btn btn-secondary" type="button" id="annuler" data-dismiss="modal">Fermer</button>
+                    <button class="btn btn-primary" onclick="basedonnes()">Confirmer</button>
                 </div>
             </div>
         </div>
@@ -236,7 +251,7 @@
 {% endblock %}
 
 {% block js %}
-    <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
+  {#  <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
     <script>
         jQuery(document).ready(function (){
             $(".js-example-tags").select2({
@@ -244,8 +259,15 @@
                 width: 'resolve',
             });
         });
-    </script>
+    </script>#}
 
+
+    <script src="{{ asset('js/chosen.jquery.js') }}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            $("#pieces").chosen()
+        })
+    </script>
 
     <script>
         function addDate_inter_tech_debut(id) {
@@ -258,7 +280,7 @@
                 },
                 async: true,
                 success: function (data) {
-                    alert(id)
+                    location.reload();
                 },
             });
 
@@ -339,6 +361,48 @@
         }
     </script>
 
+    <script>
+        var idtache;
+        var selectedPiece;
+        var quantite;
+        function ajouter(id){
+            idtache=id;
+        }
+
+        function addpiecetable() {
+            quantite = $("#quantite").val();
+            selectedPiece = $("#inputPiece :selected").text();
+            if (quantite === "" || selectedPiece === 'Selectionnez une piece') {
+                alert('veuillez selectionnez une piece avec une quantité vilde');
+            } else {
+
+                var table = document.getElementById("pieceTable");
+                let newrow = table.insertRow(table.rows.length);
+                var cell1 = newrow.insertCell(0);
+                var cell2 = newrow.insertCell(1);
+                cell1.innerHTML = selectedPiece;
+                cell2.innerHTML = quantite;
+            }
+
+        }
+
+        function basedonnes(){
+            $.ajax({
+                url: '{{ path('dashboard_tehcnicien') }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "id_tache": idtache,
+                    "addpiece": true,
+                    "libelle": selectedPiece,
+                    "quantite": quantite
+                },
+                async: true,
+                success: function (data) {
+                },
+            });
+        }
+    </script>
 
 
 {% endblock %}

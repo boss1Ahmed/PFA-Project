@@ -16,9 +16,14 @@ class MachineType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom_machine')
-            ->add('date_install')
-            ->add('documentFile',VichFileType::class)
+
+            ->add('documentFile',VichFileType::class ,[
+                'download_link'=>false,
+                'delete_label'=>false,
+                'allow_delete'=>false,
+                'label'=>'documentation de la machine',
+
+            ])
         ;
     }
 

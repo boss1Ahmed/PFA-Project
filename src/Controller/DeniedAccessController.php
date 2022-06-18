@@ -24,6 +24,8 @@ class DeniedAccessController extends AbstractController
         }elseif ($poste == 'T'){
             //return $this->forward('App\Controller\TechnicienController::DashboardAction');
             return $this->redirectToRoute('dashboard_tehcnicien');
+        }elseif ($poste == 'A') {
+            return $this->redirectToRoute('affecter_intervention');
         }else{
             return $this->forward('FOSUserBundle:Security:login');
         }

@@ -23,18 +23,20 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <h3 class="register-heading">Créer un compte à un conducteur</h3>
+                        <form method="post" >
+                            <input type="hidden" name="poste" value="C">
                         <div class="row register-form">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Prénom *" value=""/>
+                                    <input type="text" class="form-control" name="prenom" placeholder="Prénom *" value=""/>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Nom *" value=""/>
+                                    <input type="text" class="form-control" name="nom" placeholder="Nom *" value=""/>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Mot de passe *" value=""/>
+                                    <input type="password" class="form-control" id="passCon" name="password" placeholder="Mot de passe *" value=""/>
                                 </div>
 
 
@@ -56,37 +58,40 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Email *" value=""/>
+                                    <input type="email" name="email" class="form-control" placeholder="Email *" value=""/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" minlength="10" maxlength="10" name="txtEmpPhone"
+                                    <input type="text" minlength="10" maxlength="10" name="tel"
                                            class="form-control" placeholder="Numéro de téléphone *" value=""/>
                                 </div>
 
 
                                 <div class="form-group">
-                                    <input type="password" class="form-control"
-                                           placeholder="Confirmer le mot de passe *" value=""/>
+                                    <input type="password" class="form-control" id="confpassCon"
+                                           placeholder="Confirmer le mot de passe *" value="" onchange="confirmpassCond()"/>
                                 </div>
-                                <input type="submit" class="btnRegister" value="Register"/>
+                                <input type="submit" disabled="disabled" id="buttonCon" class="btnRegister" value="Register"/>
                             </div>
                         </div>
+                        </form>
                     </div>
                     <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <h3 class="register-heading">Créer un compte à un technicien </h3>
+                        <form method="post" >
+                            <input type="hidden" name="poste" value="T">
                         <div class="row register-form">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Prénom *" value=""/>
+                                    <input type="text" name="prenom" class="form-control" placeholder="Prénom *" value=""/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Nom *" value=""/>
+                                    <input type="text" name="nom" class="form-control" placeholder="Nom *" value=""/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Email *" value=""/>
+                                    <input type="email" name="email" class="form-control" placeholder="Email *" value=""/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" maxlength="10" minlength="10" class="form-control"
+                                    <input type="text" maxlength="10" minlength="10" class="form-control" name="tel"
                                            placeholder="Numéro de téléphne *" value=""/>
                                 </div>
 
@@ -94,19 +99,18 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Mot de passe *" value=""/>
+                                    <input type="password" name="password" class="form-control" placeholder="Mot de passe *" id="passTech"/>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control" placeholder="Confirmer le mot de passe *"
-                                           value=""/>
+                                           id="confpassTech" onchange="confirmpassTech()"/>
                                 </div>
                                 <div class="form-group">
-                                    <select class="form-control">
-                                        <option class="hidden" selected disabled>s'il vous plait séléctioner le domaine du technicien
-                                        </option>
-                                        <option>Meca</option>
-                                        <option>Elec</option>
-                                        <option>chi haja</option>
+                                    <select class="form-control" name="secteur">
+                                        <option selected="selected" disabled >s'il vous plait séléctioner le domaine du technicien</option>
+                                        {% for sec in secteurs %}
+                                            <option>{{ sec.nom }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
 
@@ -123,9 +127,10 @@
                                     </div>
                                 </div>
 
-                                <input type="submit" class="btnRegister" value="Register"/>
+                                <input type="submit" disabled id="buttonTech" class="btnRegister" value="Register"/>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -133,4 +138,32 @@
 
     </div>
 
+{% endblock %}
+{% block js %}
+    <script>
+        function confirmpassCond(){
+            let pass = $('#passCon').val();
+            let pass2 = $('#confpassCon').val();
+            let btn = $('#buttonCon')
+            if (pass === pass2){
+
+                btn.removeAttr("disabled");
+            }else{
+                btn.attr("disabled","disabled");
+            }
+        }
+    </script>
+    <script>
+        function confirmpassTech(){
+            let pass1 = $('#passTech').val();
+            let pass12 = $('#confpassTech').val();
+            let btn1 = $('#buttonTech')
+            if (pass1 === pass12){
+
+                btn1.removeAttr("disabled");
+            }else{
+                btn1.attr("disabled","disabled");
+            }
+        }
+    </script>
 {% endblock %}

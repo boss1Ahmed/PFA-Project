@@ -1,0 +1,187 @@
+package TP3;
+
+import java.io.*;
+import java.util.*;
+
+public class ParserLL1P {
+    Properties table;
+    Properties grammar;
+    Stack<String> stack = new Stack<String>();
+
+    public ParserLL1P(File grammarfile )
+            throws IOException {
+        grammar = new Properties();
+        grammar.load(new FileReader(grammarfile) );
+        // table = new Properties();
+        //stack.push(table.getProperty("_axiome"));
+    }
+    public Set<String> followSet(String sym){
+        Set<String> follow = new HashSet<String>();
+        if(!isTerminale(sym)) {
+//                    grammar.values().
+//                    stream().
+//                    filter(r -> ((String) r).contains(sym)).
+//                    forEach((r) -> follow.addAll(followSetRegle((String) r))  );
+            
+            for(Map.Entry<Object, Object> regles: grammar.entrySet()){
+                for(String r : ((String)  regles.getValue()).split("\\|")) {
+                    if (((String) r).contains(sym)) {
+                        follow.addAll(followSetRegle(sym,(String) regles.getKey() , r));
+                    }
+                }
+            }
+        }
+        return follow;
+    }
+//A->d / d: duXi
+    private Set<String> followSetRegle(String X, String A, String d) {
+        int i = d.indexOf(X);
+        HashSet<String> follow = new HashSet<String>();
+        String fol = null;
+        if (i + 1 < d.length()) {
+            fol = d.charAt(i + 1) + "";
+            if (isTerminale(fol)) {
+                follow.add(fol);
+            } else {
+                follow.addAll(firstSet(d.substring(i + 1)));
+                boolean annulable = true;
+                for (int j = i + 1; j < d.length(); j++) {
+                    if (!isAnnulable(d.charAt(j) + "")) {
+                        annulable = false;
+                    }
+                }
+                if (isStringAnnulable(d.substring(i+1))) {
+                    follow.addAll(followSet(A));
+                }
+            }
+        }
+
+
+        return follow;
+    }
+
+    private boolean isStringAnnulable(String substring) {
+        
+    }
+
+    public void buildLL1PTable(){
+        for(Map.Entry<Object, Object> regles: grammar.entrySet()){
+            String A = (String) regles.getKey();
+            String r = (String) regles.getValue();
+            // A-> r
+            Set<String> first = firstSet(r);
+            if (!first.isEmpty()){
+                for(String t :first){
+                    if (table.containsKey(A+","+t)){
+                        System.out.println("Erreur Grammaire n'est pa LL&");
+                    }else {
+                        table.put(A + "," + t, r);
+                    }
+                }
+                if (isStringAnnulable(r)) {
+                    
+                }
+            }else if (r.equals("e")){
+                for (String f: followSet(A)) {
+                    if (table.containsKey(A + "," + f)) {
+                        System.out.println("Erreur Grammaire n'est pa LL&");
+                    } else {
+                        table.put(A + "," + f, r);
+                    }
+                }
+            }
+        }
+    }
+    public Set<String> firstSet(String s){
+        Set<String> first = new HashSet<String>();
+        if(s.length()==0 || s.equals("e")) return first;
+        String sym = s.charAt(0)+"";
+        if(isTerminale(sym)){
+            first.add(sym);
+        }else{
+            String regles= grammar.getProperty(sym);
+            for(String r : regles.split("\\|")){
+                first.addAll(firstSet(r));
+            }
+            if(isAnnulable(sym)){
+                first.addAll(firstSet(s.substring(1)));
+            }
+        }
+        return first;
+    }
+
+    private boolean isAnnulable(String sym) {
+        String regles= grammar.getProperty(sym);
+        List<String> list = new ArrayList<String>();
+        for(String r : regles.split("\\|")){
+            if(r.equals("e")) return true;
+            boolean all = true;
+            for(char c: r.toCharArray()){
+                if(isTerminale(c+"")){
+                    all=false; break;
+                }
+            }
+            if(all) list.add(r);
+        }
+        if(!list.isEmpty()){
+            for(String r: list){
+                boolean all= true;
+                for(char c: r.toCharArray()){
+                    if(!isAnnulable(c+"")){
+                        all=false; break;
+                    }
+                }
+                if(all) return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean parse(String[] s){
+        System.out.println("start parsing ...");
+        if(s.length == 0) return true;
+        int i = 0;
+        String sym = s[i++];
+        while(!stack.isEmpty()  ) {
+            String first = stack.pop();
+            if (isTerminale(first)) {
+                if (!first.equals(sym)) {
+                    System.out.println(first + " expected but found " + sym);
+                    return false;
+                }else{
+                    if(sym.equals("$")){
+                        System.out.println("Parsing end with success.");
+                        return true;
+                    }
+                }
+                sym = s[i++];
+            } else {
+                String r = table.getProperty(first + "," + sym);
+                if (r == null) {
+                    System.out.println("Error " + first + "," + sym);
+                    return false;
+                }
+                if (!r.equals("e")) {
+                    for (int j = r.length() - 1; j > -1; j--) {
+                        stack.push(r.charAt(j) + "");
+                    }
+                }
+            }
+        }
+        System.out.println("Parsing end with success.");
+        return true;
+    }
+
+    private boolean isTerminale(String sym) {
+        return ! grammar.containsKey(sym);
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        ParserLL1P parser =
+                new ParserLL1P(new File("g0.pr") );
+        //parser.parse("+ a * a a $".split(" "));
+        System.out.println("fist(E)="+parser.firstSet("E"));
+    }
+
+}

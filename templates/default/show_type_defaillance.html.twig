@@ -2,8 +2,11 @@
 {% block title %}
     Type defaillance N° {{ type.id }}
 {% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{asset('css/techniqueHistorique.css')  }}" />
+{% endblock %}
 {% block body %}
-    <div class="container py-md-5">
+    <div class="container py-md-5 box">
         <div class="row">
             <div class="col-3">
                 <h4 class="mb-4">Type N° {{ type.id }}</h4>

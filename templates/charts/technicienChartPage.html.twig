@@ -1,0 +1,120 @@
+{% extends 'admin-dashboard.html.twig' %}
+
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
+          integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+{% endblock %}
+{% block body %}
+    <div class="">
+
+        <h1 class="h3 mb-2 text-gray-800">Charts</h1>
+
+
+        <!-- Content Row -->
+        <div class="">
+
+            <div class="">
+
+                <form method="post"> <!-- Area Chart -->
+                    <div class="card shadow ">
+                        <div class="card-header d-flex py-3">
+
+                            <div class="col-xl-5">
+                                <select id="technicienlistes" name="technicienlistes" class="form-select" aria-label="Default select example"
+                                        onchange="selectoption()">
+                                    <option>Touts les techniciens</option>
+                                    {% for technicien in techniciens %}
+                                        <option>{{ technicien.prenom }} {{ technicien.nom }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class=" col-xl-6 d-flex">
+
+
+                                    <label class=" mr-2 pt-2" style="color: #0a0a0a">Période:</label>
+                                    <label class=" mr-2 pt-2" style="color: #0a0a0a">De</label>
+                                    <input required name="datedebut" class="form-control mr-2" type="date">
+                                    <label class=" mr-2 pt-2" style="color: #0a0a0a">à</label>
+                                    <input required name="datefin" class="form-control " type="date">
+                                    <input type="submit" class=" form-control  btn-primary ml-2"  value="Chercher" >
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+                            <div>
+                                <canvas id="bar-chart" width="800" height="350"></canvas>
+
+                            </div>
+                            <hr>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+{% endblock %}
+
+            {% block js %}
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+                        integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg=="
+                        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                <script>
+                    let data;
+                    let colors = ['#C899F7', '#99C4F7', '#9896E0', '#86E7F0', '#EE8BF0', 'purple'];
+                    let nbr ={{ countall|json_encode|raw }};
+                    let nom ={{ techs|json_encode|raw }};
+                    if ("{{ tech }}" === "Touts les techniciens") {
+                        console.log(nbr);
+                        console.log(nbr[1]);
+                        console.log(nom);
+                        data = {
+                            labels:{{ datesall|json_encode|raw }} ,
+                            datasets: nbr.map((ds, i) => ({
+                                label: nom[i],
+                                beginAtZero: true,
+
+                                backgroundColor: colors[i],
+                                fill: false,
+                                data: nbr[i]
+                            }))
+                        }
+
+                    } else {
+                        console.log("tech");
+                        data = {
+                            labels: {{ lesdates|json_encode|raw }},
+                            datasets: [{
+                                label: "Nombre d'intervention traité par {{ tech }} ",
+                                categoryPercentage: 0.8,
+                                barPercentage: 0.8,
+                                data: {{ nombreinter|json_encode|raw }},
+                                fill: false,
+                                beginAtZero: true,
+                                barThickness: 80,
+                                backgroundColor: ['#C899F7', '#99C4F7', '#9896E0', '#86E7F0', '#EE8BF0', 'purple']
+
+                            }],
+                        }
+                    }
+
+                    let mychartgragh = new Chart(document.getElementById("bar-chart"), {
+                        type: 'horizontalBar',
+                        data,
+                        options: {
+                            scales: {
+                                xAxes: [{
+                                    ticks: {beginAtZero: true}
+                                }],
+                            },
+                        },
+                    });
+
+                </script>
+            {% endblock %}

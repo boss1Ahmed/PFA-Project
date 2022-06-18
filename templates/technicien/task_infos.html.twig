@@ -1,0 +1,132 @@
+{% extends 'techenicien-dashboard.html.twig' %}
+{% block css %}
+    <link rel="stylesheet" href="{{asset('css/techniqueHistorique.css')  }}" />
+{% endblock %}
+
+{% block body %}
+<div class="container py-md-4 box">
+    <div class="col-3">
+        <h4 class="mb-4 " style="font-size: x-large">Tache {{ task.id }} &nbsp;  </h4>
+    </div>
+    <div class="col-11">
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label>Machine</label>
+                <input type="text" class="form-control" readonly value="{{ task.intervention.machine.nomMachine }}">
+            </div>
+            <div class="col-md-2"></div>
+
+            <div class="form-group col-md-5">
+
+                <a href="{{ vich_uploader_asset(task.intervention.machine) }}" role="button" class="btn btn-secondary" ><span class="fa fa-file"></span> documentation</a>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label>Defaillance</label>
+                <input type="text" class="form-control" readonly value="{{ task.intervention.defaillance.libelle }}">
+            </div>
+            <div class="col-md-2"></div>
+            <div class="form-group col-md-5">
+                <label>Type de la défaillance</label>
+                <input type="text" class="form-control" readonly value="{{ task.intervention.defaillance.typeDefaillance.nom }}">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label>Date de lancement</label>
+                <input type="text" class="form-control" readonly value="{{ task.intervention.dateLancement|date('d-m-Y à H:i') }}">
+            </div>
+            <div class="col-md-2"></div>
+
+        </div>
+    </div>
+
+    <hr class="mb-4">
+    <h4 class="mb-4" style="font-size: x-large">
+        Pieces de rechange utilisées
+    </h4>
+
+    <div class="col-11">
+
+        <div class="form-row">
+            <div class="form-group col">
+                <div class="">
+                    <label for="inputPiece">Piece :</label>
+
+                    <select  id="inputPiece" class="form-control">
+                        <option selected disabled>Selectionnez une piece</option>
+                        {% for piece in pieces %}
+                            <option>{{ piece.libelle }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+            </div>
+
+
+            <div class="form-group col">
+                <div class="">
+                    <label>quantité</label>
+                    <input required type="text" id="quantite" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col ">
+                <button type="submit" class="btn btn-secondary m-t-30" onclick="addpiecetable()">ajouter</button>
+            </div>
+            <div class="form-group col">
+                <a role="button" class="btn btn-success" href="{{ path('testpdf',{'id':task.id}) }}"> <span class="fa fa-file-signature"> Générer un rapport</span></a>
+            </div>
+
+        </div>
+        <div class="row">
+            <table id="pieceTable" class="table table-bordered">
+                <tr>
+                    <th>piece</th>
+                    <th>quantité</th>
+                </tr>
+                {% for usedpiece in task.pieces %}
+                    <tr>
+                        <td>{{ usedpiece.pieceRechange.libelle }}</td>
+                        <td>{{ usedpiece.quantite }}</td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+    <script>
+        function addpiecetable() {
+            quantite = $("#quantite").val();
+            selectedPiece = $("#inputPiece :selected").text();
+            if (quantite === "" || selectedPiece === 'Selectionnez une piece') {
+                alert('veuillez selectionnez une piece avec une quantité vilde');
+            } else {
+                $.ajax({
+                    url: '{{ path('tache_information',{'id':task.id}) }}',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "quantite":quantite,
+                        "libelle":selectedPiece
+                    },
+                    async: true,
+                    success: function (data) {
+                        location.reload();
+                    },
+                });
+
+                var table = document.getElementById("pieceTable");
+                let newrow = table.insertRow(table.rows.length);
+                var cell1 = newrow.insertCell(0);
+                var cell2 = newrow.insertCell(1);
+                cell1.innerHTML = selectedPiece;
+                cell2.innerHTML = quantite;
+            }
+
+        }
+    </script>
+{% endblock %}

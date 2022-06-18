@@ -1,7 +1,11 @@
 {% extends 'conducteur-dashboard.html.twig' %}
 {% block css %}
     <link href="https://colorlib.com/polygon/cooladmin/css/theme.css" rel="stylesheet" media="all">
-    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="https://colorlib.com/polygon/cooladmin/vendor/mdi-font/css/material-design-iconic-font.min.css"
+          rel="stylesheet" media="all">
+    <link rel="stylesheet" href="{{ asset('css/techniqueHistorique.css') }}"/>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
 {% endblock %}
 
 {% block body %}
@@ -10,10 +14,22 @@
             <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
                 <div class="au-card-title" style="background-color: blue; padding-bottom: 20px;padding-top: 30px;">
                     <div class="bg-overlay bg-overlay--blue"></div>
+                    <div class="row">
+                        <div class="col-md-6">
                     <h3>
-                        <i class="zmdi zmdi-account-calendar"></i>{{ date('now')|date('d F, Y ') }}
+                        <i class="zmdi zmdi-calendar"></i>{{ date('now')|date('d F, Y ') }}
+
                     </h3>
+                        </div>
+
+
+                    </div>
                 </div>
+                <div class="m-t-15" id="scrolldiv">
+                <table id="myTable" >
+                    <thead>
+                    <tr>
+                        <td>
                 <div class="au-task js-list-load">
                     <div class="au-task__title">
                         <div class="row">
@@ -29,78 +45,89 @@
                             </div>
 
                         </div>
-
                     </div>
                 </div>
-                <div class="au-task-list js-scrollbar3">
-                    <div id="testdiv">
-                {% for i in interventions %}
-                    {% if (i.etat == "TN") or (i.etat == "T") %}
-                        <div id="div{{ i.id }}" class="au-task__item au-task__item--success js-load-item">
-                            <div class="au-task__item-inner">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <h5 class="task">
-                                            <strong style="font-size: larger">{{ i.machine.nomMachine }}</strong>
-                                        </h5>
-                                        <div>  <h6 >{{ i.defaillance.libelle }}</h6></div>
-                                        <span class="time">{{ i.dateLancement |date('d-m-Y à H:i') }}</span></div>
-                                    <div class="col-sm-2 ">
-                                        <button disabled class="btn btn-outline-success " style="cursor:auto">Terminée </button>
-                                    </div>
-                                    <div class="col-sm-2  pl-3">
-                                        <button class="btn btn-success" id="{{ i.id }}" onclick="changerEtat(this.id)">Valider</button>
-                                    </div>
-                                    <div class="col-sm-2  pl-3">
-                                        <button class="btn btn-danger" id="re{{ i.id }}" onclick="refaire(this.id)">Refaire</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                    </div>
-                    <div>
-                {% for i in interventions %}
-                    {% if i.etat== "E" or i.etat == "N" %}
-                        <div id="div{{ i.id }}" class="au-task__item au-task__item--warning js-load-item">
-                            <div class="au-task__item-inner">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <h5 class="task">
-                                            <strong style="font-size: larger">{{ i.machine.nomMachine }}</strong>
-                                        </h5>
-                                        <div>  <h6 >{{ i.defaillance.libelle }}</h6></div>
-                                        <span class="time">{{ i.dateLancement |date('d-m-Y à H:i') }}</span></div>
-                                    <div class="col-sm-2 ">
-                                        <button disabled class="btn btn-outline-warning pl-3 pr-3" id="etat{{ i.id }}" style="cursor:auto">En cours </button>
-                                    </div>
-                                    <div class="col-sm-2  pl-3">
-                                        <button class="btn btn-success" id="{{ i.id }}" disabled style="cursor:no-drop" onclick="changerEtat(this.id)">Valider</button>
-                                    </div>
-                                    <div class="col-sm-2  pl-3">
-                                        <button  hidden="hidden" class="btn btn-danger" id="re{{ i.id }}" onclick="">Refaire</button>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody >
+
+                        {% for i in interventions %}
+                            {% if (i.etat == "TN") or (i.etat == "T") %}
+                                <tr id="test{{ i.id }}">
+                            <td>
+                                <div id="div{{ i.id }}" class="au-task__item au-task__item--success js-load-item">
+                                    <div class="au-task__item-inner">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h5 class="task">
+                                                    <strong style="font-size: larger">{{ i.machine.nomMachine }}</strong>
+                                                </h5>
+                                                <div>  <h6 >{{ i.defaillance.libelle }}</h6></div>
+                                                <span class="time">{{ i.dateLancement |date('d-m-Y à H:i') }}</span></div>
+                                            <div class="col-sm-2 ">
+                                                <button disabled class="btn btn-outline-success " style="cursor:auto">Terminée </button>
+                                            </div>
+                                            <div class="col-sm-2  pl-3">
+                                                <button class="btn btn-success" id="{{ i.id }}" onclick="changerEtat(this.id)">Valider</button>
+                                            </div>
+                                            <div class="col-sm-2  pl-3">
+                                                <button class="btn btn-danger" id="re{{ i.id }}" onclick="refaire(this.id)">Refaire</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                    </div>
+                            </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+
+
+                        {% for i in interventions %}
+                            {% if i.etat== "E" or i.etat == "N" %}
+                                <tr id="test{{ i.id }}">
+                                    <td>
+                                <div id="div{{ i.id }}" class="au-task__item au-task__item--warning js-load-item">
+                                    <div class="au-task__item-inner">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h5 class="task">
+                                                    <strong style="font-size: larger">{{ i.machine.nomMachine }}</strong>
+                                                </h5>
+                                                <div>  <h6 >{{ i.defaillance.libelle }}</h6></div>
+                                                <span class="time">{{ i.dateLancement |date('d-m-Y à H:i') }}</span></div>
+                                            <div class="col-sm-2 ">
+                                                <button disabled class="btn btn-outline-warning pl-3 pr-3" id="etat{{ i.id }}" style="cursor:auto">En cours </button>
+                                            </div>
+                                            <div class="col-sm-2  pl-3">
+                                                <button class="btn btn-success" id="{{ i.id }}" disabled style="cursor:no-drop" onclick="changerEtat(this.id)">Valider</button>
+                                            </div>
+                                            <div class="col-sm-2  pl-3">
+                                                <button  hidden="hidden" class="btn btn-danger" id="re{{ i.id }}" onclick="">Refaire</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
                 </div>
             </div>
 
         </div>
     </div>
 
-
 {% endblock %}
 
-
 {% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.3/jquery.scrollTo.min.js"></script>
+
     <script>
         function changerEtat(id) {
-            divid = "div"+id;
+            divid = "div" + id;
             $.ajax({
                 url: '{{ path('changer_etat_intervention') }}',
                 type: "POST",
@@ -109,7 +136,7 @@
                 async: true,
 
                 success: function (data) {
-                    document.getElementById(divid).setAttribute("hidden","hidden");
+                    document.getElementById(divid).setAttribute("hidden", "hidden");
                 }
             });
 
@@ -121,25 +148,57 @@
         const eventSource = new EventSource(url);
         eventSource.onmessage = event => {
             console.log(event.data);
+            donnees3 = JSON.parse(event.data);
 
-            const div = document.getElementById("div"+event.data);
-            const but = document.getElementById(event.data);
-            const etat = document.getElementById("etat"+event.data);
-            const refaire = document.getElementById("re"+event.data);
+
+            const divid = document.getElementById("div" + donnees3.id_inter);
+            const button1 = document.getElementById(donnees3.id_inter);
+            const etat = document.getElementById("etat" + donnees3.id_inter);
+            const refaire = document.getElementById("re" + donnees3.id_inter);
             refaire.removeAttribute("hidden");
-            etat.textContent ="Terminée";
-            etat.setAttribute("class","btn btn-outline-success");
-            but.removeAttribute("disabled");
-            but.removeAttribute("style")
-            div.setAttribute("class","au-task__item au-task__item--success js-load-item");
+            etat.textContent = "Terminée";
+            etat.setAttribute("class", "btn btn-outline-success");
+            button1.removeAttribute("disabled");
+            button1.removeAttribute("style");
+            //button1.setAttribute("style","cursor:default")
+            divid.setAttribute("class", "au-task__item au-task__item--success js-load-item");
         }
+    </script>
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable({
+                "scrollY": "400px",
+                "lengthMenu": [ 3,5,10, 25, 50, 75],
+                ordering:  false,
+            });
+        } );
     </script>
 
     <script>
-        function refaire(){
+        jQuery(document).ready(function () {
+            const id = {{ notifiedIntervention }};
+            if (id != 0){
 
-        }
+
+                const div = document.getElementById('div' +{{ notifiedIntervention }});
+                div.setAttribute("class", "au-task__item au-task__item--success  alert-danger");
+
+                //$(document).scrollTop($('#div' +{{ notifiedIntervention }}).offset().top);
+                //$(window).scrollTop($('#test' +{{ notifiedIntervention }}).position().top);
+                 $(document).scrollTo('#div50');
+
+                //alert($('#test' +{{ notifiedIntervention }}).offset().top);
+                window.setTimeout(function () {
+                    div.setAttribute("class", "au-task__item au-task__item--success ");
+                }, 2000);
+            }
+        });
+
 
     </script>
+
+
+
 
 {% endblock %}

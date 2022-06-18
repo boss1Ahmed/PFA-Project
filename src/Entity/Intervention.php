@@ -69,6 +69,11 @@ class Intervention
      */
     private $etat;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $notified;
+
     public function __construct()
     {
 
@@ -207,6 +212,18 @@ class Intervention
     public function setEtat(?string $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getNotified(): ?bool
+    {
+        return $this->notified;
+    }
+
+    public function setNotified(?bool $notified): self
+    {
+        $this->notified = $notified;
 
         return $this;
     }

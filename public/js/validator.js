@@ -7,19 +7,22 @@ $secteur = $("#secteur_select");
 $machine = $("#machine_select");
 $defaillance = $("#defaillance");
 $urgence = $("#urgence");
+$zone = $("#zone");
 
 $bol1 = false;
 $bol2 = false;
 $bol3 = false;
 $bol4 = false;
+$bol5 = false;
 
 function buttonvalidator(){
-    if ($bol1 && $bol2 && $bol3 && $bol4){
+    if ($bol1 && $bol2 && $bol3 && $bol4 ){
         $button.removeAttr("disabled");
         $button.removeAttr("style");
 
         //alert("nice!");
     }else{
+
         $button.attr("style","cursor:no-drop");
         $button.attr("disabled",true);
     }
@@ -41,6 +44,25 @@ function validatemachine(){
         $warn.setAttribute("class","fa fa-exclamation-triangle")
         $bol1 = false;
         buttonvalidator();
+    }
+}
+
+$zone.on("change", validatezone);
+function validatezone(){
+    const $zoneval =  $zone.val();
+    const $warnzone = $("#warnzone");
+
+    if(checkString($zoneval) ){
+        $warnzone.removeClass(" fa-exclamation-triangle");
+        $warnzone.addClass("fa-check");
+        $bol5 = true;
+        //buttonvalidator();
+    }else{
+        $warnzone.removeClass(" fa-check");
+        $warnzone.addClass("fa-exclamation-triangle");
+        $warnzone.setAttribute("class","fa fa-exclamation-triangle")
+        $bol5 = false;
+        //buttonvalidator();
     }
 }
 

@@ -36,4 +36,5 @@ security:
       #  - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/conducteur, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/technicien, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, role: IS_AUTHENTICATED_FULLY }
     access_denied_url: /denied_access

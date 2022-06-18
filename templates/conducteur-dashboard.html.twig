@@ -28,18 +28,18 @@
 
 </head>
 
-<body id="page-top" class="">
+<body id="page-top" >
 
 <!-- Page Wrapper -->
-<div id="wrapper">
+<div id="wrapper"  >
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" >
 
         <!-- Sidebar - Brand -->
 
 
-        <div class="sidebar-brand d-flex align-items-center justify-content-center mx-2">Plateforme Conducteur </div>
+        <div class="sidebar-brand d-flex align-items-center justify-content-center mx-2" style="font-size: small" >Plateforme Conducteur </div>
 
 
         <!-- Divider -->
@@ -85,8 +85,8 @@
         <li class="nav-item active">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTables" aria-expanded="false"
                aria-controls="collapseTables">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Tables</span>
+                <i class="fas fa-fw fa-table"></i>
+                <span>Tableaux</span>
             </a>
             <div id="collapseTables" class="collapse " aria-labelledby="headingPages"
                  data-parent="#accordionSidebar">
@@ -109,7 +109,6 @@
 
     </ul>
     <!-- End of Sidebar -->
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -117,7 +116,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow ">
 
                 <!-- Sidebar Toggle (Topbar) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -153,6 +152,12 @@
                             </form>
                         </div>
                     </li>
+                    {% set count = 0 %}
+                    {% for intervention in interventions %}
+                        {% if (intervention.etat == 'T') and (intervention.notified == 0) %}
+                        {% set count = count + 1 %}
+                        {% endif %}
+                    {% endfor %}
 
                     <!-- Nav Item - Alerts -->
                     <li class="nav-item dropdown no-arrow mx-1">
@@ -160,7 +165,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
                             <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter" id="counter"></span>
+                            <span class="badge badge-danger badge-counter" id="counter">{{ count }}</span>
                         </a>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -170,6 +175,23 @@
                             </h6>
 
                             <div id="notifs"> </div>
+                            {% for intervention in interventions %}
+                                {% if (intervention.etat == 'T') and (intervention.notified == 0) %}
+                                    <div>
+                                        <a class="dropdown-item d-flex align-items-center" href="{{ path('conducteur_dashboard', {'id':intervention.id}) }}">
+                                            <div class="mr-3">
+                                                <div class="icon-circle bg-warning">
+                                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="small text-gray-500" id="date">{{ intervention.dateLancement|date('d-m-Y à H:i') }}</div>
+                                                Vous avez une nouvelle intervention à valider!
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                             <div  hidden="hidden" >
                                 <a class="dropdown-item d-flex align-items-center" href="{{ path('conducteur_dashboard') }}" id="notifToClone" hidden="hidden">
                                     <div class="mr-3">
@@ -204,7 +226,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="{{ asset('') }}">
+                            <a class="dropdown-item" href="{{ path('fos_user_change_password') }}">
                                 <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Change password
                             </a>
@@ -224,6 +246,7 @@
                 </ul>
 
             </nav>
+
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -292,17 +315,22 @@
     const url1 = new URL('http://localhost:3000/hub');
     url1.searchParams.append('topic', 'http://example.com/ping');
     let count = 0;
-    const eventSource1 = new EventSource(url);
+    const eventSource1 = new EventSource(url1);
     eventSource1.onmessage = event => {
         console.log("walo");
+        donnees2 = JSON.parse(event.data);
 
-        $('#counter').text(count+1);
-        count = count+1;
-        var notif = $('#notifToClone').clone(true);
-        //notif.find('#date').text(donnees1.date);
-        notif.find('#date').text((new Date()).toLocaleString())
-        //alert((new Date()).toLocaleString());
-        notif.appendTo('#notifs');
+        if (donnees2.id_cond == {{ app.user.id }}) {
+            $('#counter').text(count + 1);
+            count = count + 1;
+            var notif = $('#notifToClone').clone(true);
+            //notif.find('#date').text(donnees1.date);
+            notif.find('#date').text((new Date()).toLocaleString())
+            //alert((new Date()).toLocaleString());
+            notif.prop("id",donnees2.id_inter);
+            notif.prop("href","{{ path('conducteur_dashboard') }}/"+ donnees2.id_inter)
+            notif.appendTo('#notifs');
+        }
 
 
     }

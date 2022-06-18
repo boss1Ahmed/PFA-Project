@@ -56,6 +56,11 @@ class Machine
     private $documentName;
 
     /**
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    private $updatedAt;
+
+    /**
      * @ORM\OneToMany(targetEntity=Zone::class, mappedBy="machine")
      */
     private $zones;
@@ -162,6 +167,10 @@ class Machine
     public function setDocumentFile(?File $documentFile): void
     {
         $this->documentFile = $documentFile;
+        if ($documentFile) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
     }
 
     /**
@@ -210,5 +219,16 @@ class Machine
         return $this;
     }
 
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTime $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
 
 }
