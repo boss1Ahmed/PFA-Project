@@ -18,4 +18,11 @@ class RedirectionController extends AbstractController
         return $this->forward('App\Controller\DeniedAccessController::indexAction');
 
     }
+
+    /**
+     * @Route ("/",name="home_page")
+     */
+    public function homepage(){
+        return $this->forward('FOSUserBundle:Security:login');
+    }
 }

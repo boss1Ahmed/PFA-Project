@@ -67,6 +67,8 @@ class TestController extends AbstractController
      */
     public function testpdf(DateInteTech $task){
         $now = date_create('now');
+        $zone = $task->getIntervention()->getDefaillance()->getZones()[0]->getLibelle();
+
 
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -75,7 +77,8 @@ class TestController extends AbstractController
 
         $html = $this->renderView('test/pdffile.html.twig',[
             'tache'=>$task,
-            'date'=>$now
+            'date'=>$now,
+            "zone"=>$zone
         ]);
         $dompdf->loadHtml($html);
 

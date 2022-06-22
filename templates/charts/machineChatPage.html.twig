@@ -75,6 +75,14 @@
                 title: {
                     display: true,
                     text: 'Statistique des machines pour 2022'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            reverse: false,
+                            stepSize: 1
+                        },
+                    }]
                 }
             }
         });
@@ -96,6 +104,14 @@
                 title: {
                     display: true,
                     text: 'Statistique des interventions pour la machine '+machine[index-1]
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            reverse: false,
+                            stepSize: 1
+                        },
+                    }]
                 }
             }
            });

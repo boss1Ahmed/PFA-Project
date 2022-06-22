@@ -7,20 +7,40 @@
     </style>
 </head>
 <body>
-
+<h1 STYLE="text-align: center">CMCP-IP</h1>
 <table style="width: 100%;" class="header">
     <tr>
-        <td><h1 style="text-align: left">{{ tache.technicien.nom }} {{ tache.technicien.prenom }}</h1></td>
-        <td><h1 style="text-align: right">{{ date|date('Y-m-d à H-i') }}</h1></td>
+        <h1 STYLE="text-align: center"> RAPPORT D'INTERVENTION</h1>
+    </tr>
+</table>
+<br>
+<hr/>
+<table style="width: 100%; font-size: 8pt;">
+    <tr>
+        <td>Machine: <strong>{{ tache.intervention.machine.nomMachine }}</strong><br>
+            Zone:  <strong>{{ zone }}</strong>
+
+        </td>
+        <td>Intervention: <strong>{{ tache.intervention.id }}</strong><br>
+            Date de lancement: <strong>{{ tache.intervention.dateLancement|date('Y-m-d à H:i') }}</strong> <br>
+            Date fin: <strong>{{ tache.intervention.dateFin|date('Y-m-d à H:i') }}</strong><br>
+            Conducteur: <strong>{{ tache.intervention.conducteur.nom }}</strong>
+        </td>
     </tr>
 </table>
 
-<table style="width: 100%; font-size: 8pt;">
-    <tr>
-        <td>Machine: <strong>{{ tache.intervention.machine.nomMachine }}</strong></td>
-        <td>Intervention: <strong>{{ tache.intervention.id }}</strong></td>
-    </tr>
-</table>
+
+<h4>Note:</h4>
+<hr>
+<p>..................................................................
+    .....................................................................
+    .....................................................................
+    .....................................................................
+    .....................................................................</p>
+
+<hr/>
+
+
 <table style="width: 100%">
     <thead>
     <tr>
@@ -37,5 +57,10 @@
     {% endfor %}
     </tbody>
 </table>
+<br>
+<hr>
+<H6 STYLE="text-align: center">signature:</H6>
+<H6 STYLE="text-align: center">{{ tache.technicien.nom }} {{ tache.technicien.prenom }}</H6>
+
 </body>
 </html>

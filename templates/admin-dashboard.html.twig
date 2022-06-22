@@ -220,15 +220,15 @@
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
+                            <a class="dropdown-item" href="{{ path('fos_user_change_password') }}">
+                                <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Changer le mot de passe
                             </a>
 
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ path('fos_user_security_login') }}" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
+                                Se déconnecter
                             </a>
                         </div>
                     </li>
@@ -274,15 +274,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Prêt pour quitter ?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-body">Sélectionnez "Déconnecter" si vous voulez quitter votre session.</div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="{{ path('fos_user_security_login') }}">Logout</a>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulez</button>
+                <a class="btn btn-primary" href="{{ path('fos_user_security_logout') }}">Déconnecter</a>
             </div>
         </div>
     </div>
